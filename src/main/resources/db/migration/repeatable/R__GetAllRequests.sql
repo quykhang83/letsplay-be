@@ -1,0 +1,3 @@
+SELECT * FROM PUBLIC.Requests LIMIT 5;
+
+SHOW TimeZone;
