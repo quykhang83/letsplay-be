@@ -6,6 +6,7 @@
     </exclusions>
     <dependencies>
         <module name="org.hibernate.search.orm" services="export" />
+        <!-- <module name="org.keycloak.keycloak-authz-client" services="import"/> -->
     </dependencies>
   </deployment>
 </jboss-deployment-structure>
