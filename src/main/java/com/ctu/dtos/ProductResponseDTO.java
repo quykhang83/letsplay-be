@@ -3,22 +3,26 @@ package com.ctu.dtos;
 import com.ctu.model.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ProductDTO {
+public class ProductResponseDTO {
+    private Long productId;
     private String productName;
     private Double productPrice;
     private String productDescription;
     private String productTypeName;
     private Double productCapacity;
+    private Long productDownloads;
 
-    public ProductDTO() {
+    public ProductResponseDTO() {
     }
 
-    public ProductDTO(Product product) {
+    public ProductResponseDTO(Product product) {
+        this.productId = product.getProductId();
         this.productName = product.getProductName();
         this.productPrice = product.getProductPrice();
         this.productDescription = product.getProductDescription();
         this.productTypeName = product.getProductType().getProductTypeName();
         this.productCapacity = product.getProductCapacity();
+        this.productDownloads = product.getProductDownloads();
     }
     
     @JsonIgnore
@@ -79,6 +83,22 @@ public class ProductDTO {
 
     public void setProductCapacity(Double productCapacity) {
         this.productCapacity = productCapacity;
+    }
+
+    public Long getProductDownloads() {
+        return productDownloads;
+    }
+
+    public void setProductDownloads(Long productDownloads) {
+        this.productDownloads = productDownloads;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     

@@ -2,7 +2,6 @@ package com.ctu.daos;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -17,7 +16,6 @@ import com.ctu.exception.EmptyEntityException;
 import com.ctu.model.Product;
 import com.ctu.model.ProductType;
 
-@Stateless(name = "ProductDAO")
 public class ProductDAO {
     @PersistenceContext(unitName = "primary")
     EntityManager entityManager;
