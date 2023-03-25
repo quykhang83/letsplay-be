@@ -2,19 +2,21 @@ package com.ctu.services;
 
 import java.util.List;
 
-import com.ctu.dtos.ProductDTO;
-import com.ctu.model.Product;
+import com.ctu.dtos.ProductReceiveDTO;
+import com.ctu.dtos.ProductResponseDTO;
 
 public interface ProductService {
-    public List<ProductDTO> getAllProducts();
+    public List<ProductResponseDTO> getAllProducts();
     
-    public List<Product> seachProductsByKeywords(String keywords);
+    public List<ProductResponseDTO> seachProductsByKeywords(String keywords);
 
-    public Product getProductById(final Long id);
+    public ProductResponseDTO getProductById(final Long id);
 
-    public void createProduct(ProductDTO productPayload);
+    public void createProduct(ProductReceiveDTO productPayload);
 
-    public void updateProduct(Long id, Product product);
+    public void updateProduct(Long id, ProductReceiveDTO product);
 
     public void deleteProduct(Long id);
+
+    public List<ProductResponseDTO> getProductByProductType(String productTypeName);
 }

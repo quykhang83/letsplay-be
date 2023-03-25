@@ -25,7 +25,7 @@ import javax.ws.rs.sse.SseEventSink;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ctu.dtos.ProductDTO;
+import com.ctu.dtos.ProductReceiveDTO;
 import com.ctu.exception.InvalidSearchKeywordException;
 import com.ctu.firebase.FirebaseMessagingSnippets;
 import com.ctu.model.Message;
@@ -45,7 +45,7 @@ public class ProductAPI {
     private ProductService productService;
 
     @GET
-    @Path("/")
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
         logger.info("Get all products");
@@ -103,7 +103,7 @@ public class ProductAPI {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLeaveRequest(ProductDTO productPayload) {
+    public Response createLeaveRequest(ProductReceiveDTO productPayload) {
         if (productPayload.isMissingKeys()) {
             logger.error("Missing keys in product body");
             Message errMsg = new Message("Missing keys in product body");
@@ -120,22 +120,29 @@ public class ProductAPI {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLeaveRequestById(@PathParam("id") Long id) {
-        System.out.println(productService.getProductById(id));
+    public Response getProductById(@PathParam("id") Long id) {
+        logger.info("Get product with id: " + id);
         return Response.ok(productService.getProductById(id)).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductByType(@QueryParam("type") String type) {
+        logger.info("Get product with id: " + type);
+        return Response.ok(productService.getProductByProductType(type)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProduct(@PathParam("id") Long id, Product product) {
-        if (product.isMissingKeys()) {
+    public Response updateProduct(@PathParam("id") Long id, ProductReceiveDTO productPayload) {
+        if (productPayload.isMissingKeys()) {
             logger.error("Product is missing keys");
             Message message = new Message("Product is missing keys");
             throw new WebApplicationException(Response.status(400).entity(message).build());
         }
-        productService.updateProduct(id, product);
+        productService.updateProduct(id, productPayload);
         logger.info("Product " + id + " was updated successfully");
         Message message = new Message("Product was updated successfully");
         isUpdated.set(true);

@@ -19,6 +19,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.bridge.builtin.DoubleBridge;
 
+import com.ctu.dtos.ProductReceiveDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "Products")
@@ -67,6 +68,13 @@ public class Product {
         this.productType = productType;
         this.productCapacity = productCapacity;
         this.productDownloads = productDownloads;
+    }
+
+    public Product(ProductReceiveDTO payload) {
+        this.productName = payload.getProductName();
+        this.productPrice = payload.getProductPrice();
+        this.productDescription = payload.getProductDescription();
+        this.productCapacity = payload.getProductCapacity();
     }
 
     @JsonIgnore
