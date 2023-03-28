@@ -45,9 +45,6 @@ public class ProductType {
 
     @JsonIgnore
     public boolean isMissingKeys() {
-        if (this.productTypeId == null) {
-            return true;
-        }
         if (this.productTypeName == null) {
             return true;
         }
@@ -60,9 +57,6 @@ public class ProductType {
 
     @JsonIgnore
     public boolean isEmpty() {
-        if (this.productTypeId != null) {
-            return false;
-        }
         if (this.productTypeName != null) {
             return false;
         }

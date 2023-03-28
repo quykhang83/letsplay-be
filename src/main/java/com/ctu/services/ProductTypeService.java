@@ -2,12 +2,18 @@ package com.ctu.services;
 
 import java.util.List;
 
-import com.ctu.dtos.ProductReceiveDTO;
 import com.ctu.model.Product;
+import com.ctu.model.ProductType;
 
 public interface ProductTypeService {
-    public List<ProductReceiveDTO> getAllProductTypes();
+    public List<ProductType> getAllProductTypes();
 
-    public Product getProductTypeByName(final String proTypeName);
+    public ProductType getProductTypeById(final Long id);
+
+    public Product getProductTypeByName(final String productTypeName);
+
+    public void createProductType(final ProductType productType);
+
+    public void deleteProductType(Long id);
 
 }
