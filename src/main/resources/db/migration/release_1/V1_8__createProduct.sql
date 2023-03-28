@@ -1,7 +1,7 @@
 CREATE TABLE PUBLIC.Products (
     productId bigserial NOT NULL,
     productName VARCHAR(250) NOT NULL,
-    productPrice NUMERIC(10, -3) NOT NULL,
+    productPrice NUMERIC(10, 2) NOT NULL,
     productDescription VARCHAR(250) NOT NULL,
     productTypeId bigint NOT NULL,
     productCapacity REAL NOT NULL,
