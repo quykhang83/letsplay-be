@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 
 @Path("/requests")
 @RequestScoped
+@DenyAll
 public class RequestAPI {
     private static AtomicInteger eventID = new AtomicInteger(1);
     private static AtomicBoolean isUpdated = new AtomicBoolean(false);
@@ -55,6 +57,7 @@ public class RequestAPI {
 
     @GET
     @Path("/search")
+    @RolesAllowed({ "manager", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response seachRequestsByReason(@QueryParam("keywords") String keywords) {
         if (keywords == null) {

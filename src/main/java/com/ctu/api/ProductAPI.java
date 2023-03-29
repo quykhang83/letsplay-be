@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -36,6 +39,8 @@ import com.ctu.services.RequestService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 
 @Path("/products")
+@RequestScoped
+@DenyAll
 public class ProductAPI {
     private static AtomicInteger eventID = new AtomicInteger(1);
     private static AtomicBoolean isUpdated = new AtomicBoolean(false);
@@ -46,6 +51,7 @@ public class ProductAPI {
 
     @GET
     @Path("/all")
+    @RolesAllowed({ "manager" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
         logger.info("Get all products");
@@ -55,6 +61,7 @@ public class ProductAPI {
 
     @GET
     @Path("/search")
+    @RolesAllowed({ "manager" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response seachRequestsByReason(@QueryParam("keywords") String keywords) {
         if (keywords == null) {
@@ -99,11 +106,12 @@ public class ProductAPI {
         }
     }
 
-    @Path("/")
     @POST
+    @Path("/")
+    @RolesAllowed({ "manager" })
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLeaveRequest(ProductReceiveDTO productPayload) {
+    public Response createProduct(ProductReceiveDTO productPayload) {
         if (productPayload.isMissingKeys()) {
             logger.error("Missing keys in product body");
             Message errMsg = new Message("Missing keys in product body");
@@ -119,6 +127,7 @@ public class ProductAPI {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "manager" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") Long id) {
         logger.info("Get product with id: " + id);
@@ -126,6 +135,7 @@ public class ProductAPI {
     }
 
     @GET
+    @RolesAllowed({ "manager" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductByType(@QueryParam("type") String type) {
         logger.info("Get product with id: " + type);
@@ -134,6 +144,7 @@ public class ProductAPI {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({ "manager" })
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@PathParam("id") Long id, ProductReceiveDTO productPayload) {
@@ -151,6 +162,7 @@ public class ProductAPI {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({ "manager" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteProduct(@PathParam("id") Long id) {
         productService.deleteProduct(id);
