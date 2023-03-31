@@ -38,7 +38,7 @@ import com.ctu.services.ProductTypeService;
 import com.ctu.services.RequestService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 
-@Path("/requesttypes")
+@Path("/product-types")
 @RequestScoped
 @DenyAll
 public class ProductTypeAPI {

@@ -51,7 +51,7 @@ public class ProductAPI {
     private ProductService productService;
 
     @GET
-    @Path("/all")
+    // @Path("/")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
@@ -135,13 +135,13 @@ public class ProductAPI {
         return Response.ok(productService.getProductById(id)).build();
     }
 
-    @GET
-    @PermitAll
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductByType(@QueryParam("type") String type) {
-        logger.info("Get product with id: " + type);
-        return Response.ok(productService.getProductByProductType(type)).build();
-    }
+    // @GET
+    // @PermitAll
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public Response getProductByType(@QueryParam("type") String type) {
+    // logger.info("Get product with id: " + type);
+    // return Response.ok(productService.getProductByProductType(type)).build();
+    // }
 
     @PUT
     @Path("/{id}")
