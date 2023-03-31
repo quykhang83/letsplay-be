@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -51,7 +52,7 @@ public class ProductAPI {
 
     @GET
     @Path("/all")
-    @RolesAllowed({ "manager" })
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
         logger.info("Get all products");
@@ -59,17 +60,17 @@ public class ProductAPI {
 
     }
 
-    @GET
-    @Path("/search")
-    @RolesAllowed({ "manager" })
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response seachRequestsByReason(@QueryParam("keywords") String keywords) {
-        if (keywords == null) {
-            throw new InvalidSearchKeywordException("Keyword must not be null");
-        }
-        return Response.ok(productService.seachProductsByKeywords(keywords)).build();
-    }
-
+    // @GET
+    // @Path("/search")
+    // @PermitAll
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public Response seachRequestsByReason(@QueryParam("keywords") String
+    // keywords) {
+    // if (keywords == null) {
+    // throw new InvalidSearchKeywordException("Keyword must not be null");
+    // }
+    // return Response.ok(productService.seachProductsByKeywords(keywords)).build();
+    // }
 
     @GET
     @Path("/ssevent")
@@ -127,7 +128,7 @@ public class ProductAPI {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({ "manager" })
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") Long id) {
         logger.info("Get product with id: " + id);
@@ -135,7 +136,7 @@ public class ProductAPI {
     }
 
     @GET
-    @RolesAllowed({ "manager" })
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductByType(@QueryParam("type") String type) {
         logger.info("Get product with id: " + type);
