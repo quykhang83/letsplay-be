@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -37,7 +38,6 @@ import com.ctu.services.ProductTypeService;
 import com.ctu.services.RequestService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 
-
 @Path("/requesttypes")
 @RequestScoped
 @DenyAll
@@ -49,7 +49,7 @@ public class ProductTypeAPI {
 
     @GET
     @Path("/")
-    @RolesAllowed({ "manager" })
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProductTypes() {
         logger.info("Get all product type");
@@ -61,7 +61,7 @@ public class ProductTypeAPI {
     @RolesAllowed({ "manager" })
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProduct(ProductType productType) {
+    public Response createProductType(ProductType productType) {
         if (productType.isMissingKeys()) {
             logger.error("Missing keys in product type body");
             Message errMsg = new Message("Missing keys in product type body");
