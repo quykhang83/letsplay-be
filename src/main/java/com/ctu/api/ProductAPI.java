@@ -51,13 +51,17 @@ public class ProductAPI {
     private ProductService productService;
 
     @GET
-    // @Path("/")
+    @Path("/")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllProducts() {
-        logger.info("Get all products");
-        return Response.ok(productService.getAllProducts()).build();
-
+    public Response getAllProducts(@QueryParam("type") String type) {
+        if (type.isEmpty()) {
+            logger.info("Get all products");
+            return Response.ok(productService.getAllProducts()).build();
+        } else {
+            logger.info("Get product with type: " + type);
+            return Response.ok(productService.getProductByProductType(type)).build();
+        }
     }
 
     // @GET
@@ -136,10 +140,11 @@ public class ProductAPI {
     }
 
     // @GET
+    // @Path("/")
     // @PermitAll
     // @Produces(MediaType.APPLICATION_JSON)
     // public Response getProductByType(@QueryParam("type") String type) {
-    // logger.info("Get product with id: " + type);
+    // logger.info("Get product with type: " + type);
     // return Response.ok(productService.getProductByProductType(type)).build();
     // }
 
