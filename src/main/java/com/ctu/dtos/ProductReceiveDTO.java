@@ -41,6 +41,25 @@ public class ProductReceiveDTO {
         return false;
     }
 
+    public boolean isUpdatable(){
+        if (this.productName != null) {
+            return true;
+        }
+        if (this.productPrice != null) {
+            return true;
+        }
+        if (this.productDescription != null) {
+            return true;
+        }
+        if (this.productTypeName != null) {
+            return true;
+        }
+        if (this.productCapacity != null) {
+            return true;
+        }
+        return false;
+    }
+
     public Double getProductPrice() {
         return productPrice;
     }

@@ -9,9 +9,11 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -30,6 +32,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ctu.dtos.ProductReceiveDTO;
+import com.ctu.exception.InvalidProductTypeNameException;
+import com.ctu.exception.InvalidProductTypenameWebException;
 import com.ctu.exception.InvalidSearchKeywordException;
 import com.ctu.firebase.FirebaseMessagingSnippets;
 import com.ctu.model.Message;
@@ -55,7 +59,7 @@ public class ProductAPI {
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts(@QueryParam("type") String type) {
-        if (type.isEmpty()) {
+        if (type==null) {
             logger.info("Get all products");
             return Response.ok(productService.getAllProducts()).build();
         } else {
@@ -122,7 +126,11 @@ public class ProductAPI {
             Message errMsg = new Message("Missing keys in product body");
             throw new WebApplicationException(Response.status(400).entity(errMsg).build());
         }
-        productService.createProduct(productPayload);
+        try {
+            productService.createProduct(productPayload);
+        } catch (InvalidProductTypeNameException e) {
+            throw new InvalidProductTypenameWebException(productPayload.getProductTypeName());
+        }
         logger.info("Product was created successfully");
         Message message = new Message("Product was created successfully");
         isUpdated.set(true);
@@ -148,15 +156,15 @@ public class ProductAPI {
     // return Response.ok(productService.getProductByProductType(type)).build();
     // }
 
-    @PUT
+    @PATCH
     @Path("/{id}")
     @RolesAllowed({ "manager" })
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@PathParam("id") Long id, ProductReceiveDTO productPayload) {
-        if (productPayload.isMissingKeys()) {
-            logger.error("Product is missing keys");
-            Message message = new Message("Product is missing keys");
+        if (!productPayload.isUpdatable()) {
+            logger.error("Product has no new key");
+            Message message = new Message("Product has no new key");
             throw new WebApplicationException(Response.status(400).entity(message).build());
         }
         productService.updateProduct(id, productPayload);
