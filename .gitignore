@@ -3,3 +3,4 @@ target/
 .env
 serviceAccountKey.json
 logs/
+build_and_deploy.bat
