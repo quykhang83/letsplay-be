@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 
 import com.ctu.daos.ProductDAO;
 import com.ctu.daos.ProductTypeDAO;
@@ -58,13 +59,10 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public void createProduct(ProductReceiveDTO productPayload) {
+    public void createProduct(ProductReceiveDTO productPayload) throws InvalidProductTypeNameException {
         ProductType type = null;
-        try {
-            type = productTypeDAO.getProductTypeByName(productPayload.getProductTypeName());
-        } catch (InvalidProductTypeNameException e) {
-            throw new InvalidProductTypenameWebException(productPayload.getProductTypeName());
-        }
+     
+        type = productTypeDAO.getProductTypeByName(productPayload.getProductTypeName());
 
         Product product = new Product(productPayload.getProductName(), productPayload.getProductPrice(), productPayload.getProductDescription(),type, productPayload.getProductCapacity(), 0L);
         
@@ -74,21 +72,37 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void updateProduct(Long id, ProductReceiveDTO product) {
+        Product oldProduct;
         try {
-            productDAO.getProductById(id);
+            oldProduct = productDAO.getProductById(id);
         } catch (EmptyEntityException e) {
             throw new IdNotFoundException(id);
         }
-        ProductType newProductType;
-        try {
-            newProductType = productTypeDAO.getProductTypeByName(product.getProductTypeName());
-        } catch (InvalidProductTypeNameException e) {
-            throw new InvalidProductTypenameWebException(product.getProductTypeName());
+        
+
+        if(product.getProductName()!=null){
+            oldProduct.setProductName(product.getProductName());
         }
-        Product newProduct = new Product(product);
-        newProduct.setProductId(id);
-        newProduct.setProductType(newProductType);
-        productDAO.updateProduct(newProduct);
+        if(product.getProductPrice()!=null){
+            oldProduct.setProductPrice(product.getProductPrice());
+        }
+        if(product.getProductDescription()!=null){
+            oldProduct.setProductDescription(product.getProductDescription());
+        }
+        if(product.getProductTypeName()!=null){
+            ProductType newProductType;
+            try {
+                newProductType = productTypeDAO.getProductTypeByName(product.getProductTypeName());
+                oldProduct.setProductType(newProductType);
+            } catch (InvalidProductTypeNameException e) {
+                throw new InvalidProductTypenameWebException(product.getProductTypeName());
+            }
+        }
+        if(product.getProductCapacity()!=null){
+            oldProduct.setProductCapacity(product.getProductCapacity());
+        }
+
+        productDAO.updateProduct(oldProduct);
     }
 
     @Override

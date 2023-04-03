@@ -3,6 +3,8 @@ package com.ctu.daos;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -35,14 +37,15 @@ public class ProductTypeDAO {
     }
 
     public ProductType getProductTypeByName(String typeName) throws InvalidProductTypeNameException {
-        TypedQuery<ProductType> query = entityManager.createQuery("FROM ProductTypes pt WHERE pt.productTypeName = :typeName",
-                ProductType.class);
-        ProductType productType = query.setParameter("typeName", typeName).getSingleResult();
-        if (productType == null) {
+        ProductType productType=null;
+        try {
+            TypedQuery<ProductType> query = entityManager.createQuery("FROM ProductTypes pt WHERE pt.productTypeName = :typeName",
+                    ProductType.class);
+            productType = query.setParameter("typeName", typeName).getSingleResult();
+        } catch (NoResultException e) {
             throw new InvalidProductTypeNameException(typeName);
-        } else {
-            return productType;
         }
+        return productType;
     }
 
     public ProductType createProductType(String productTypeName, String productTypeDescription) {

@@ -30,6 +30,18 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "userPhone")
+    private String userPhone;
+
+    @Column(name = "userAvt")
+    private String userAvt;
+
+    @Column(name = "userDisplayname")
+    private String userDisplayname;
+
+    @Column(name = "userBio")
+    private String userBio;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", targetEntity = Device.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Device> devices = new HashSet<>();
@@ -77,4 +89,37 @@ public class User {
         this.devices = devices;
     }
 
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public String getUserAvt() {
+        return userAvt;
+    }
+
+    public void setUserAvt(String userAvt) {
+        this.userAvt = userAvt;
+    }
+
+    public String getUserDisplayname() {
+        return userDisplayname;
+    }
+
+    public void setUserDisplayname(String userDisplayname) {
+        this.userDisplayname = userDisplayname;
+    }
+
+    public String getUserBio() {
+        return userBio;
+    }
+
+    public void setUserBio(String userBio) {
+        this.userBio = userBio;
+    }
+
+    
 }
