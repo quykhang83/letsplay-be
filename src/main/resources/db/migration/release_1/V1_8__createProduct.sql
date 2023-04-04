@@ -20,6 +20,9 @@ ALTER TABLE PUBLIC.Products
 ADD CONSTRAINT producttype_id_fk FOREIGN KEY (productTypeId) REFERENCES ProductTypes (productTypeId);
 
 INSERT INTO PUBLIC.ProductTypes(productTypeName, productTypeDescription)
+VALUES ('Null', 'It demonstrates for a product which dont have any type');
+
+INSERT INTO PUBLIC.ProductTypes(productTypeName, productTypeDescription)
 VALUES ('Sport', 'Sports games have expanded in variety, offering full-fledged partnerships with major sporting organizations');
 
 INSERT INTO PUBLIC.ProductTypes(productTypeName, productTypeDescription)
