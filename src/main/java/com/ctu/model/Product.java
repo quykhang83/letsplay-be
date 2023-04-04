@@ -50,7 +50,7 @@ public class Product {
 
     @IndexedEmbedded
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productTypeId", nullable = false)
+    @JoinColumn(name = "productTypeId", nullable = true)
     private ProductType productType;
 
     @Column(name = "productCapacity")

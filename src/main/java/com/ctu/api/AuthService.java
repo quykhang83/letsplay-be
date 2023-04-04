@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.jwt.Claim;
 
+import com.ctu.daos.UserDAO;
+import com.ctu.exception.EmptyEntityException;
 import com.ctu.model.User;
 
 @Path("/info")
@@ -31,6 +33,9 @@ public class AuthService {
     @Claim("family_name")
     private String familyName;
 
+    @Inject
+    UserDAO userDAO;
+
     @Path("/")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,5 +44,24 @@ public class AuthService {
         String userName = givenName + " " + familyName;
         User user = new User(userName, email);
         return Response.ok(user).build();
+    }
+
+    @Path("/")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("manager")
+    public Response validateUser() {
+        User user = null;
+        try {
+            user = userDAO.getUserByEmail(email);
+        } catch (EmptyEntityException e) {
+            System.out.println("CREATE NEW MANAGER IN DB WITH EMAIL " + email);
+            userDAO.createUser(email, email);
+            try {
+                user = userDAO.getUserByEmail(email);
+            } catch (EmptyEntityException e1) {
+            }
+        }
+        return null;
     }
 }
