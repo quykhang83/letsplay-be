@@ -14,11 +14,11 @@
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
             </PatternLayout>
-            <SizeBasedTriggeringPolicy size="1 KB" />
+            <SizeBasedTriggeringPolicy size="1 MB" />
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.aavn.api.RequestAPI" level="info" additivity="false">
+        <Logger name="com.aavn.api.ProductAPI" level="info" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="RollingFile" />
         </Logger>
