@@ -31,6 +31,7 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.MessagingErrorCode;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.SendResponse;
@@ -218,17 +219,20 @@ public class FirebaseMessagingSnippets {
                         List<SendResponse> responses = response.getResponses();
                         for (int i = 0; i < responses.size(); i++) {
                                 if (!responses.get(i).isSuccessful()) {
-                                        // The order of responses corresponds to the order of the registration tokens.
-                                        failedTokens.add(registrationTokens.get(i));
-
+                                        MessagingErrorCode errorCode = responses.get(i).getException()
+                                                        .getMessagingErrorCode();
+                                        String errorMessage = responses.get(i).getException().getMessage();
+                                        // System.out.println("Error code: " + errorCode);
+                                        if (errorCode.equals(MessagingErrorCode.UNREGISTERED)) {
+                                                failedTokens.add(registrationTokens.get(i));
+                                                logger.debug("Resolve Invalid FCM token");
+                                        } else {
+                                                logger.debug("FCM error: " + errorMessage);
+                                        }
                                 }
+
                         }
-
-                        // Manager manager =
-                        // managerDAO.getManagerByEmail("khang.huynhquy@axonactive.com");
-                        // System.out.println(manager.getUsername());
-
-                        System.out.println("List of tokens that caused failures: " + failedTokens);
+                        logger.debug("List of tokens that caused failures: " + failedTokens);
                 }
                 return failedTokens;
                 // [END send_multicast_error]

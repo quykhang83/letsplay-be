@@ -1,9 +1,5 @@
 package com.ctu.api;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -12,31 +8,21 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.sse.OutboundSseEvent;
-import javax.ws.rs.sse.Sse;
-import javax.ws.rs.sse.SseEventSink;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ctu.exception.InvalidSearchKeywordException;
-import com.ctu.firebase.FirebaseMessagingSnippets;
 import com.ctu.model.Message;
 import com.ctu.model.ProductType;
-import com.ctu.model.Request;
 import com.ctu.services.ProductTypeService;
-import com.ctu.services.RequestService;
-import com.google.firebase.messaging.FirebaseMessagingException;
 
 @Path("/product-types")
 @RequestScoped
@@ -70,6 +56,24 @@ public class ProductTypeAPI {
         productTypeService.createProductType(productType);
         logger.info("ProductType was created successfully");
         Message message = new Message("ProductType was created successfully");
+
+        return Response.ok(message).build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    @RolesAllowed({ "manager" })
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProductType(@PathParam("id") Long id, ProductType type) {
+        if (!type.isUpdatable()) {
+            logger.error("Product type has no new key");
+            Message message = new Message("Product type has no new key");
+            throw new WebApplicationException(Response.status(400).entity(message).build());
+        }
+        productTypeService.updateProduct(id, type);
+        logger.info("Product type id = " + id + " was updated successfully");
+        Message message = new Message("Product type was updated successfully");
 
         return Response.ok(message).build();
     }

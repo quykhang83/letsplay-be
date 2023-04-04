@@ -9,7 +9,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 import com.ctu.daos.ProductDAO;
 import com.ctu.daos.ProductTypeDAO;

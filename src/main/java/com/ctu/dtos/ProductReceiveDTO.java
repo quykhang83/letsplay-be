@@ -40,7 +40,8 @@ public class ProductReceiveDTO {
         }
         return false;
     }
-
+    
+    @JsonIgnore
     public boolean isUpdatable(){
         if (this.productName != null) {
             return true;

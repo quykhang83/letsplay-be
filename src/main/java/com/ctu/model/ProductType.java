@@ -66,6 +66,17 @@ public class ProductType {
         return true;
     }
 
+    @JsonIgnore
+    public boolean isUpdatable() {
+        if (this.productTypeName != null) {
+            return true;
+        }
+        if (this.productTypeDescription != null) {
+            return true;
+        }
+        return false;
+    }
+
     public Long getProductTypeId() {
         return productTypeId;
     }

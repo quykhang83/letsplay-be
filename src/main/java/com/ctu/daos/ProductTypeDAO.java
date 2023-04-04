@@ -3,7 +3,6 @@ package com.ctu.daos;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -60,7 +59,13 @@ public class ProductTypeDAO {
         return productType;
     }
 
-
+    public void updateProductType(ProductType type) {
+        try {
+            entityManager.merge(type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void deleteProductType(Long id) {
         try {
