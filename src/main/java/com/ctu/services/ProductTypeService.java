@@ -14,6 +14,8 @@ public interface ProductTypeService {
 
     public void createProductType(final ProductType productType);
 
+    public void updateProduct(Long id, ProductType productType);
+
     public void deleteProductType(Long id);
 
 }

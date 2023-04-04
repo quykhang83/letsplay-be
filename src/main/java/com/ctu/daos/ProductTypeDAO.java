@@ -59,7 +59,13 @@ public class ProductTypeDAO {
         return productType;
     }
 
-
+    public void updateProductType(ProductType type) {
+        try {
+            entityManager.merge(type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void deleteProductType(Long id) {
         try {

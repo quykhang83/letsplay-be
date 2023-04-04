@@ -48,10 +48,29 @@ public class ProductTypeServiceImp implements ProductTypeService{
     }
 
     @Override
+    public void updateProduct(Long id, ProductType productType) {
+        ProductType oldType;
+        try {
+            oldType = productTypeDAO.getProductTypeById(id);
+        } catch (EmptyEntityException e) {
+            throw new IdNotFoundException(id);
+        }
+        
+
+        if(oldType.getProductTypeName()!=null){
+            oldType.setProductTypeName(productType.getProductTypeName());;
+        }
+        if(oldType.getProductTypeDescription()!=null){
+            oldType.setProductTypeDescription(productType.getProductTypeDescription());
+        }
+
+        productTypeDAO.updateProductType(oldType);
+    }
+
+    @Override
     public void deleteProductType(Long id) {
         getProductTypeById(id);
         productTypeDAO.deleteProductType(id);
     }
-
     
 }
