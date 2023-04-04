@@ -10,11 +10,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name="Devices")
 @Table(name="Devices", schema = "PUBLIC")
+@Indexed
 public class Device {
 
     @Id
+    @DocumentId
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deviceId")
     private Integer deviceId;
@@ -25,8 +33,10 @@ public class Device {
     @Column(name = "deviceOS")
     private String deviceOS;
 
+    @IndexedEmbedded
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="userId", nullable = false)
+    @JsonIgnore
     private User user;
 
     @Column(name = "fcmToken")
@@ -34,10 +44,9 @@ public class Device {
 
     public Device() {}
 
-    public Device(String deviceName, String deviceOS, User user) {
-        this.deviceName = deviceName;
-        this.deviceOS = deviceOS;
+    public Device(User user, String token) {
         this.user = user;
+        this.fcmToken = token;
     }
 
     public Integer getDeviceId() {
@@ -70,6 +79,26 @@ public class Device {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return deviceId.equals(((Device)o).deviceId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     
