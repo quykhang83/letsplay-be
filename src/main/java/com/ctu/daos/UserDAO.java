@@ -61,7 +61,6 @@ public class UserDAO {
     
     public User getUserByEmail(String email) throws EmptyEntityException {
         User user = null;
-        System.out.println("USER MAIL IN DAO " + email);
         try {
             TypedQuery<User> query = entityManager
                     .createQuery("FROM Users m WHERE m.email = :email", User.class);

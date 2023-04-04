@@ -59,14 +59,15 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void createProduct(ProductReceiveDTO productPayload) throws InvalidProductTypeNameException {
-        ProductType type = null;
-     
-        type = productTypeDAO.getProductTypeByName(productPayload.getProductTypeName());
+        // ProductType type = null;
+        // type =
+        // productTypeDAO.getProductTypeByName(productPayload.getProductTypeName());
 
-        Product product = new Product(productPayload.getProductName(), productPayload.getProductPrice(), productPayload.getProductDescription(),type, productPayload.getProductCapacity(), 0L);
-        
+        Product product = new Product(productPayload.getProductName(), productPayload.getProductPrice(),
+                productPayload.getProductDescription(), null, productPayload.getProductCapacity(), 0L);
+
         productDAO.createProduct(product.getProductName(), product.getProductPrice(), product.getProductDescription(),
-                type, product.getProductCapacity(), product.getProductDownloads());
+                null, product.getProductCapacity(), product.getProductDownloads());
     }
 
     @Override
@@ -77,18 +78,19 @@ public class ProductServiceImp implements ProductService {
         } catch (EmptyEntityException e) {
             throw new IdNotFoundException(id);
         }
-        
 
-        if(product.getProductName()!=null){
+        if (product.getProductName() != null) {
             oldProduct.setProductName(product.getProductName());
         }
-        if(product.getProductPrice()!=null){
+        if (product.getProductPrice() != null) {
             oldProduct.setProductPrice(product.getProductPrice());
         }
-        if(product.getProductDescription()!=null){
+        if (product.getProductDescription() != null) {
             oldProduct.setProductDescription(product.getProductDescription());
         }
-        if(product.getProductTypeName()!=null){
+        if (product.getProductTypeName() == "") {
+            oldProduct.setProductType(null);
+        } else if (product.getProductTypeName() != null) {
             ProductType newProductType;
             try {
                 newProductType = productTypeDAO.getProductTypeByName(product.getProductTypeName());
@@ -97,7 +99,7 @@ public class ProductServiceImp implements ProductService {
                 throw new InvalidProductTypenameWebException(product.getProductTypeName());
             }
         }
-        if(product.getProductCapacity()!=null){
+        if (product.getProductCapacity() != null) {
             oldProduct.setProductCapacity(product.getProductCapacity());
         }
 

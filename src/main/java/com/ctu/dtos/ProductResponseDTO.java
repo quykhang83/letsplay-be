@@ -20,11 +20,14 @@ public class ProductResponseDTO {
         this.productName = product.getProductName();
         this.productPrice = product.getProductPrice();
         this.productDescription = product.getProductDescription();
-        this.productTypeName = product.getProductType().getProductTypeName();
+        if (product.getProductType() == null)
+            this.productTypeName = null;
+        else
+            this.productTypeName = product.getProductType().getProductTypeName();
         this.productCapacity = product.getProductCapacity();
         this.productDownloads = product.getProductDownloads();
     }
-    
+
     @JsonIgnore
     public boolean isMissingKeys() {
         if (this.productName == null) {
@@ -36,9 +39,9 @@ public class ProductResponseDTO {
         if (this.productDescription == null) {
             return true;
         }
-        if (this.productTypeName == null) {
-            return true;
-        }
+        // if (this.productTypeName == null) {
+        // return true;
+        // }
         if (this.productCapacity == null) {
             return true;
         }
@@ -101,5 +104,4 @@ public class ProductResponseDTO {
         this.productId = productId;
     }
 
-    
 }

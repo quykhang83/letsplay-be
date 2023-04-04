@@ -32,9 +32,9 @@ public class ProductReceiveDTO {
         if (this.productDescription == null) {
             return true;
         }
-        if (this.productTypeName == null) {
-            return true;
-        }
+        // if (this.productTypeName == null) {
+        //     return true;
+        // }
         if (this.productCapacity == null) {
             return true;
         }
