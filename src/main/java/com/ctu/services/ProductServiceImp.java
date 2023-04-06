@@ -60,14 +60,13 @@ public class ProductServiceImp implements ProductService {
     @Override
     public void createProduct(ProductReceiveDTO productPayload) throws InvalidProductTypeNameException {
         // ProductType type = null;
-        // type =
-        // productTypeDAO.getProductTypeByName(productPayload.getProductTypeName());
+        ProductType type = productTypeDAO.getProductTypeByName("#");
 
         Product product = new Product(productPayload.getProductName(), productPayload.getProductPrice(),
-                productPayload.getProductDescription(), null, productPayload.getProductCapacity(), 0L);
+                productPayload.getProductDescription(), type, productPayload.getProductCapacity(), 0L);
 
         productDAO.createProduct(product.getProductName(), product.getProductPrice(), product.getProductDescription(),
-                null, product.getProductCapacity(), product.getProductDownloads());
+                type, product.getProductCapacity(), product.getProductDownloads());
     }
 
     @Override

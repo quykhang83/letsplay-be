@@ -20,6 +20,9 @@ ALTER TABLE PUBLIC.Products
 ADD CONSTRAINT producttype_id_fk FOREIGN KEY (productTypeId) REFERENCES ProductTypes (productTypeId);
 
 INSERT INTO PUBLIC.ProductTypes(productTypeName, productTypeDescription)
+VALUES ('#', 'It demonstrate for product which is without type');
+
+INSERT INTO PUBLIC.ProductTypes(productTypeName, productTypeDescription)
 VALUES ('Sport', 'Sports games have expanded in variety, offering full-fledged partnerships with major sporting organizations');
 
 INSERT INTO PUBLIC.ProductTypes(productTypeName, productTypeDescription)
@@ -32,4 +35,4 @@ INSERT INTO PUBLIC.Products(productName, productPrice, productDescription, produ
 VALUES ('FIFA Simulator', '123000','A demo sport game', '1', '200.5', '100');
 
 INSERT INTO PUBLIC.Products(productName, productPrice, productDescription, productTypeId, productCapacity, productDownloads)
-VALUES ('BELL IN SOMEWHERE', '987000','A demo null type game', null, '333.55', '100');
+VALUES ('BELL IN SOMEWHERE', '987000','A demo null type game', '1', '333.55', '100');

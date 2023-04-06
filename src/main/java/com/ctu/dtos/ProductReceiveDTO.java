@@ -17,7 +17,6 @@ public class ProductReceiveDTO {
         this.productName = product.getProductName();
         this.productPrice = product.getProductPrice();
         this.productDescription = product.getProductDescription();
-        this.productTypeName = product.getProductType().getProductTypeName();
         this.productCapacity = product.getProductCapacity();
     }
     

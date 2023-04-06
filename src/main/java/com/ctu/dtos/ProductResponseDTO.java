@@ -20,10 +20,7 @@ public class ProductResponseDTO {
         this.productName = product.getProductName();
         this.productPrice = product.getProductPrice();
         this.productDescription = product.getProductDescription();
-        if (product.getProductType() == null)
-            this.productTypeName = null;
-        else
-            this.productTypeName = product.getProductType().getProductTypeName();
+        this.productTypeName = product.getProductType().getProductTypeName();
         this.productCapacity = product.getProductCapacity();
         this.productDownloads = product.getProductDownloads();
     }
