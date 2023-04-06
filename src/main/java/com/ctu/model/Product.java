@@ -1,5 +1,8 @@
 package com.ctu.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -57,6 +61,9 @@ public class Product {
     @FieldBridge(impl = DoubleBridge.class)
     @Field
     private Double productCapacity;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "library")
+    private Set<User> users = new HashSet<>();
 
     public Product() {
     }
@@ -173,6 +180,14 @@ public class Product {
         return "Product [productName=" + productName + ", productPrice=" + productPrice
                 + ", productDescription=" + productDescription + ", productDownloads=" + productDownloads
                 + ", productType=" + productType + ", productCapacity=" + productCapacity + "]";
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     

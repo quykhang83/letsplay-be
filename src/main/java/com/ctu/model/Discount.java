@@ -19,11 +19,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity(name = "Discounts")
 @Table(name = "Discounts", schema = "PUBLIC")
-@Indexed
+// @Indexed
 public class Discount {
 
     @Id
-    @DocumentId
+    // @DocumentId
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "discountId")
     private Long discountId;
@@ -47,7 +47,7 @@ public class Discount {
     @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp toDate;
 
-    
+
 
     public Discount() {
     }
