@@ -18,7 +18,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.aavn.api.ProductAPI" level="info" additivity="false">
+        <Logger name="com.ctu.api.ProductAPI" level="info" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="RollingFile" />
         </Logger>
