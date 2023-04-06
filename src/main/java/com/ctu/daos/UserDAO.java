@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.model.Product;
 import com.ctu.model.User;
 
 public class UserDAO {
@@ -59,7 +60,7 @@ public class UserDAO {
     }
 
     
-    public User getUserByEmail(String email) throws EmptyEntityException {
+    public User getUserByEmail(String email) throws EmptyEntityException  {
         User user = null;
         try {
             TypedQuery<User> query = entityManager
@@ -87,5 +88,20 @@ public class UserDAO {
         }
     }
 
-    
+    public void addProductToLibrary(Long userId, Product product) {
+        try {
+            User user = getUserById(userId);
+            System.out.println("In DAO layer!~~~~~~~~~~~~~");
+            try {
+                user.setSingleProductToLibrary(product);
+                System.out.println("Done to add product!~~~~~~~~~~~~~");
+                entityManager.merge(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (EmptyEntityException e) {
+            e.printStackTrace();
+        }
+        
+    }
 }

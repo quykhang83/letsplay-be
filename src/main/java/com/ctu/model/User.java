@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -46,7 +49,15 @@ public class User {
     @OneToMany(mappedBy = "user", targetEntity = Device.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Device> devices = new HashSet<>();
 
-    // @OneToMany(mappedBy = "user", targetEntity = Request.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Libraries", joinColumns = {
+            @JoinColumn(name = "userId", nullable = false, updatable = false) }, inverseJoinColumns = {
+                    @JoinColumn(name = "productId", nullable = false, updatable = false) })
+    private Set<Product> library = new HashSet<>();
+
+    // @OneToMany(mappedBy = "user", targetEntity = Request.class, fetch =
+    // FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     // private List<Request> requests = new ArrayList<>();
 
     public User() {
@@ -121,5 +132,15 @@ public class User {
         this.userBio = userBio;
     }
 
-    
+    public Set<Product> getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Set<Product> library) {
+        this.library = library;
+    }
+
+    public void setSingleProductToLibrary(Product product) {
+        this.library.add(product);
+    }
 }

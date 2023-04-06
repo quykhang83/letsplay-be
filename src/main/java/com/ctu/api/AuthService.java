@@ -1,5 +1,6 @@
 package com.ctu.api;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -11,9 +12,9 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.jwt.Claim;
 
-import com.ctu.daos.UserDAO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.model.User;
+import com.ctu.services.UserService;
 
 @Path("/info")
 @RequestScoped
@@ -34,34 +35,29 @@ public class AuthService {
     private String familyName;
 
     @Inject
-    UserDAO userDAO;
+    UserService userService;
 
-    @Path("/")
     @GET
+    @Path("/")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("manager")
     public Response getUserInfo() {
-        String userName = givenName + " " + familyName;
-        User user = new User(userName, email);
+        User user = null;
+        try {
+            user = userService.getUserByEmail(email);
+        } catch (EmptyEntityException e) {
+            System.out.println("CREATE NEW USER IN DB WITH EMAIL " + email);
+            user = new User(givenName + " " + familyName, email);
+            userService.createUser(user);
+
+            try {
+                user = userService.getUserByEmail(email);
+            } catch (EmptyEntityException e1) {
+                e1.printStackTrace();
+            }
+        }
+
         return Response.ok(user).build();
     }
 
-    @Path("/")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("manager")
-    public Response validateUser() {
-        User user = null;
-        try {
-            user = userDAO.getUserByEmail(email);
-        } catch (EmptyEntityException e) {
-            System.out.println("CREATE NEW MANAGER IN DB WITH EMAIL " + email);
-            userDAO.createUser(email, email);
-            try {
-                user = userDAO.getUserByEmail(email);
-            } catch (EmptyEntityException e1) {
-            }
-        }
-        return null;
-    }
 }
