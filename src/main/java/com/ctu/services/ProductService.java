@@ -7,6 +7,7 @@ import javax.persistence.NoResultException;
 import com.ctu.dtos.ProductReceiveDTO;
 import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.exception.InvalidProductTypeNameException;
+import com.ctu.model.ProductType;
 
 public interface ProductService {
     public List<ProductResponseDTO> getAllProducts();
@@ -18,6 +19,8 @@ public interface ProductService {
     public void createProduct(ProductReceiveDTO productPayload) throws NoResultException, InvalidProductTypeNameException;
 
     public void updateProduct(Long id, ProductReceiveDTO product);
+
+    public void setProductTypeNull(ProductType productType);
 
     public void deleteProduct(Long id);
 

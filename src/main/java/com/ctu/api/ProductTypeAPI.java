@@ -71,7 +71,7 @@ public class ProductTypeAPI {
             Message message = new Message("Product type has no new key");
             throw new WebApplicationException(Response.status(400).entity(message).build());
         }
-        productTypeService.updateProduct(id, type);
+        productTypeService.updateProductType(id, type);
         logger.info("Product type id = " + id + " was updated successfully");
         Message message = new Message("Product type was updated successfully");
 

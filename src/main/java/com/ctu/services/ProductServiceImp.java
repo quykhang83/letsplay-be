@@ -106,6 +106,24 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void setProductTypeNull(ProductType productType) {
+        Set<Product> products = new HashSet<Product>();
+        products = productType.getProduct();
+        try {
+            ProductType typeNull = productTypeDAO.getProductTypeByName("#");
+            for (Product product : products) {
+                product.setProductType(typeNull);
+                System.out.println("Product Service: " + product.getProductType().getProductTypeName());
+                productDAO.updateProduct(product);
+            }
+        } catch (InvalidProductTypeNameException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void deleteProduct(Long id) {
         getProductById(id);
         productDAO.deleteProduct(id);

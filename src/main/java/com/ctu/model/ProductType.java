@@ -32,7 +32,7 @@ public class ProductType {
     private String productTypeDescription;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "productType", targetEntity = Product.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "productType", targetEntity = Product.class, fetch = FetchType.LAZY, orphanRemoval = false, cascade = CascadeType.DETACH)
     private Set<Product> product;
 
     public ProductType() {
