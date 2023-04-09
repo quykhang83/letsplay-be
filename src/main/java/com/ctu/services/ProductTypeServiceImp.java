@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.ctu.daos.ProductTypeDAO;
+import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.model.Product;
@@ -15,6 +16,8 @@ import com.ctu.model.ProductType;
 public class ProductTypeServiceImp implements ProductTypeService{
     @Inject
     ProductTypeDAO productTypeDAO;
+    @Inject
+    ProductService productService;
 
     @Override
     public List<ProductType> getAllProductTypes() {
@@ -48,7 +51,7 @@ public class ProductTypeServiceImp implements ProductTypeService{
     }
 
     @Override
-    public void updateProduct(Long id, ProductType productType) {
+    public void updateProductType(Long id, ProductType productType) {
         ProductType oldType;
         try {
             oldType = productTypeDAO.getProductTypeById(id);
@@ -69,7 +72,8 @@ public class ProductTypeServiceImp implements ProductTypeService{
 
     @Override
     public void deleteProductType(Long id) {
-        getProductTypeById(id);
+        ProductType type = getProductTypeById(id);
+        productService.setProductTypeNull(type);
         productTypeDAO.deleteProductType(id);
     }
     

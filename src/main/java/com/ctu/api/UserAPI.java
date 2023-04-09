@@ -70,4 +70,13 @@ public class UserAPI {
         Message message = new Message("Product " + idProduct + " was added to library");
         return Response.ok(message).build();
     }
+
+    @GET
+    @Path("/library")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsInLibrary() {
+        logger.info("Get library");
+        return Response.ok(userService.getProductsInLibrary()).build();
+    }
 }

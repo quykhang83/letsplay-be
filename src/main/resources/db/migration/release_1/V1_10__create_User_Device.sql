@@ -19,9 +19,9 @@ CREATE TABLE PUBLIC.Devices (
 );
 
 INSERT INTO PUBLIC.Users(userName, email)
-VALUES ('hqkhang', 'khang.huynhquy@axonactive.com');
+VALUES ('hqkhang', 'quykhang831@gmail.com');
 INSERT INTO PUBLIC.Users(userName, email)
-VALUES ('lca', 'ca.luu@axonactive.com');
+VALUES ('lca', 'luuca792@gmail.com');
 
 ALTER TABLE PUBLIC.Devices
 ADD CONSTRAINT user_id_devices_fk FOREIGN KEY (userId) REFERENCES Users (userId);
