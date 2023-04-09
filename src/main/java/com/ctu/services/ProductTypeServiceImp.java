@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.ctu.daos.ProductTypeDAO;
-import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.model.Product;
