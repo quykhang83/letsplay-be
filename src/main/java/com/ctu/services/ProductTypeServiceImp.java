@@ -13,7 +13,7 @@ import com.ctu.model.Product;
 import com.ctu.model.ProductType;
 
 @Stateless
-public class ProductTypeServiceImp implements ProductTypeService{
+public class ProductTypeServiceImp implements ProductTypeService {
     @Inject
     ProductTypeDAO productTypeDAO;
     @Inject
@@ -46,7 +46,7 @@ public class ProductTypeServiceImp implements ProductTypeService{
 
     @Override
     public void createProductType(ProductType productType) {
-        
+
         productTypeDAO.createProductType(productType.getProductTypeName(), productType.getProductTypeDescription());
     }
 
@@ -58,12 +58,11 @@ public class ProductTypeServiceImp implements ProductTypeService{
         } catch (EmptyEntityException e) {
             throw new IdNotFoundException(id);
         }
-        
 
-        if(oldType.getProductTypeName()!=null){
-            oldType.setProductTypeName(productType.getProductTypeName());;
+        if (productType.getProductTypeName() != null) {
+            oldType.setProductTypeName(productType.getProductTypeName());
         }
-        if(oldType.getProductTypeDescription()!=null){
+        if (productType.getProductTypeDescription() != null) {
             oldType.setProductTypeDescription(productType.getProductTypeDescription());
         }
 
@@ -76,5 +75,5 @@ public class ProductTypeServiceImp implements ProductTypeService{
         productService.setProductTypeNull(type);
         productTypeDAO.deleteProductType(id);
     }
-    
+
 }
