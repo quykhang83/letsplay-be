@@ -19,6 +19,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInLibraryException;
+import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.Message;
 import com.ctu.services.UserService;
 
@@ -54,7 +56,7 @@ public class UserAPI {
     }
 
     @POST
-    @Path("/product/{id}/save")
+    @Path("/library/product/{id}/save")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProductToLibrary(@PathParam("id") Long idProduct) {
@@ -62,10 +64,32 @@ public class UserAPI {
             userService.addProductToLibrary(idProduct);
         } catch (EmptyEntityException e) {
             throw new WebApplicationException(
-                    Response.status(400).entity(new Message("Can not add product to library!")).build());
+                    Response.status(400).entity(new Message("The product is not available!")).build());
+        } catch (ExitedProductInLibraryException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product already exists in the library!")).build());
         }
         logger.info("Product " + idProduct + " was added to library");
         Message message = new Message("Product " + idProduct + " was added to library");
+        return Response.ok(message).build();
+    }
+
+    @POST
+    @Path("/library/product/{id}/remove")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeProductFromLibrary(@PathParam("id") Long idProduct) {
+        try {
+            userService.removeProductFromLibrary(idProduct);
+        } catch (EmptyEntityException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product is not available!")).build());
+        } catch (NotExitedProductInLibraryException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product is not existed in the library!")).build());
+        }
+        logger.info("Product " + idProduct + " was removed from library");
+        Message message = new Message("Product " + idProduct + " was removed from library");
         return Response.ok(message).build();
     }
 

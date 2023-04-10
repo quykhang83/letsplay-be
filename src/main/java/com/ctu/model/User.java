@@ -140,7 +140,11 @@ public class User {
         this.library = library;
     }
 
-    public void setSingleProductToLibrary(Product product) {
-        this.library.add(product);
+    public boolean setSingleProductToLibrary(Product product) {
+        return this.library.add(product);
+    }
+
+    public boolean unSetSingleProductToLibrary(Product product) {
+        return this.library.remove(product);
     }
 }

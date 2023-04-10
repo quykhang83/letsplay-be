@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInLibraryException;
+import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.User;
 
 public interface UserService {
@@ -19,7 +21,9 @@ public interface UserService {
 
     public void deleteUser(Long id);
 
-    public void addProductToLibrary(Long productId) throws EmptyEntityException;
+    public void addProductToLibrary(Long productId) throws EmptyEntityException, ExitedProductInLibraryException;
+
+    public void removeProductFromLibrary(Long productId) throws EmptyEntityException, NotExitedProductInLibraryException;
 
     public List<ProductResponseDTO> getProductsInLibrary();
 }
