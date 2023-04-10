@@ -17,9 +17,11 @@ import com.ctu.daos.StatusDAO;
 import com.ctu.daos.UserDAO;
 import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInLibraryException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.exception.InternalServerError;
 import com.ctu.exception.InvalidProductTypenameWebException;
+import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.Product;
 import com.ctu.model.User;
 
@@ -83,11 +85,17 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void addProductToLibrary(Long productId) throws EmptyEntityException {
+    public void addProductToLibrary(Long productId) throws EmptyEntityException, ExitedProductInLibraryException {
         User user = userDAO.getUserByEmail(email);
         Product product = productDAO.getProductById(productId);
         userDAO.addProductToLibrary(user.getUserId(), product);
-        System.out.println("In service layer!~~~~~~~~~~~~~");
+    }
+
+    @Override
+    public void removeProductFromLibrary(Long productId) throws EmptyEntityException, NotExitedProductInLibraryException {
+        User user = userDAO.getUserByEmail(email);
+        Product product = productDAO.getProductById(productId);
+        userDAO.removeProductFromLibrary(user.getUserId(), product);
     }
 
     @Override
