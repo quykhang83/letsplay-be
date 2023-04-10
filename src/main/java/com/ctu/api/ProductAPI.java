@@ -49,7 +49,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 public class ProductAPI {
     private static AtomicInteger eventID = new AtomicInteger(1);
     private static AtomicBoolean isUpdated = new AtomicBoolean(false);
-    private static final Logger logger = LogManager.getLogger(RequestAPI.class);
+    private static final Logger logger = LogManager.getLogger(ProductAPI.class);
 
     @Inject
     private ProductService productService;

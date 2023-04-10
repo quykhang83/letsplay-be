@@ -91,10 +91,8 @@ public class UserDAO {
     public void addProductToLibrary(Long userId, Product product) {
         try {
             User user = getUserById(userId);
-            System.out.println("In DAO layer!~~~~~~~~~~~~~");
             try {
                 user.setSingleProductToLibrary(product);
-                System.out.println("Done to add product!~~~~~~~~~~~~~");
                 entityManager.merge(user);
             } catch (Exception e) {
                 e.printStackTrace();

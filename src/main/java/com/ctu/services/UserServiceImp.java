@@ -87,7 +87,6 @@ public class UserServiceImp implements UserService {
         User user = userDAO.getUserByEmail(email);
         Product product = productDAO.getProductById(productId);
         userDAO.addProductToLibrary(user.getUserId(), product);
-        System.out.println("In service layer!~~~~~~~~~~~~~");
     }
 
     @Override

@@ -10,7 +10,7 @@ USER root
 COPY module.xml $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/
 COPY standalone.xml $JBOSS_HOME/standalone/configuration/
 
-COPY log4j2.xml $JBOSS_HOME/standalone/configuration/
+COPY src/main/resources/log4j2.xml $JBOSS_HOME/standalone/configuration/
 COPY postgresql-42.5.0.jar $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/
 
 # RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/
