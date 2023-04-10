@@ -9,9 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Indexed;
-
 import com.ctu.utils.TimestampDeserializer;
 import com.ctu.utils.TimestampSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
