@@ -3,7 +3,7 @@ CREATE TABLE PUBLIC.Products (
     productName VARCHAR(250) NOT NULL,
     productPrice NUMERIC(10, 2) NOT NULL,
     productDescription VARCHAR(250) NOT NULL,
-    productTypeId bigint,
+    productTypeId bigint NOT NULL,
     productCapacity NUMERIC(10, 2) NOT NULL,
     productDownloads bigint NOT NULL DEFAULT 0,
     primary key (productId)

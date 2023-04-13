@@ -14,14 +14,12 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.model.Product;
-import com.ctu.model.ProductType;
 
 public class ProductDAO {
     @PersistenceContext(unitName = "primary")
     EntityManager entityManager;
 
-    public Product createProduct(String productName, Double productPrice, String productDescription, ProductType productType, Double productCapacity, Long productDownloads) {
-        Product product = new Product(productName, productPrice, productDescription, productType, productCapacity, productDownloads);
+    public Product createProduct(Product product) {
         System.out.println(product);
         try {
             entityManager.persist(product);
