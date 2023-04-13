@@ -31,6 +31,11 @@ public class Comment {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
     public Comment() {}
 
     public Comment(String commentContent, Boolean commentRecomment) {
@@ -68,6 +73,14 @@ public class Comment {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     
