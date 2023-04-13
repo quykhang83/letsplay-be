@@ -65,7 +65,11 @@ public class ProductServiceImp implements ProductService {
 
         Product product = new Product(productPayload.getProductName(), productPayload.getProductPrice(),
                 productPayload.getProductDescription(), type, productPayload.getProductCapacity(), 0L);
-        ProductDemo productDemo = new ProductDemo(productPayload.getProductDemoTitle(), productPayload.getProductDemoUrl());
+        ProductDemo productDemo;
+        if (productPayload.getProductDemoTitle()==null || productPayload.getProductDemoUrl()==null) {
+            productDemo = new ProductDemo("Default Image", "https://fms-laravel-images.s3.ap-southeast-1.amazonaws.com/images/logoAxonActive.png");
+        }
+        else productDemo = new ProductDemo(productPayload.getProductDemoTitle(), productPayload.getProductDemoUrl());
         product.addSingleProductDemo(productDemo);
         productDAO.createProduct(product);
     }
