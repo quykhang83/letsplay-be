@@ -68,6 +68,9 @@ public class Product {
     @OneToMany(mappedBy = "product", targetEntity = ProductDemo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<ProductDemo> productDemos = new HashSet<ProductDemo>();
 
+    @OneToMany(mappedBy = "product", targetEntity = Comment.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<Comment>();
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "library")
     private Set<User> users = new HashSet<>();
 
@@ -208,5 +211,13 @@ public class Product {
     public void addSingleProductDemo(ProductDemo productDemo){
         this.productDemos.add(productDemo);
         productDemo.setProduct(this);
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }
