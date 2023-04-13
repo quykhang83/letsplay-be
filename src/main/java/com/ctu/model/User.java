@@ -50,6 +50,10 @@ public class User {
     private Set<Device> devices = new HashSet<>();
 
     @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = Comment.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<>();
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Libraries", joinColumns = {
             @JoinColumn(name = "userId", nullable = false, updatable = false) }, inverseJoinColumns = {
@@ -147,4 +151,13 @@ public class User {
     public boolean unSetSingleProductToLibrary(Product product) {
         return this.library.remove(product);
     }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+    
 }
