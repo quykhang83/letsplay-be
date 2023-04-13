@@ -3,6 +3,7 @@ package com.ctu.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.DocumentId;
@@ -54,16 +56,21 @@ public class Product {
 
     @IndexedEmbedded
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productTypeId", nullable = true)
+    @JoinColumn(name = "productTypeId", nullable = false)
     private ProductType productType;
 
     @Column(name = "productCapacity")
     @FieldBridge(impl = DoubleBridge.class)
     @Field
     private Double productCapacity;
+    
+    // @JsonIgnore
+    @OneToMany(mappedBy = "product", targetEntity = ProductDemo.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<ProductDemo> productDemos = new HashSet<ProductDemo>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "library")
     private Set<User> users = new HashSet<>();
+
 
     public Product() {
     }
@@ -190,5 +197,16 @@ public class Product {
         this.users = users;
     }
 
-    
+    public Set<ProductDemo> getProductDemos() {
+        return productDemos;
+    }
+
+    public void setProductDemos(Set<ProductDemo> productDemos) {
+        this.productDemos = productDemos;
+    }
+
+    public void addSingleProductDemo(ProductDemo productDemo){
+        this.productDemos.add(productDemo);
+        productDemo.setProduct(this);
+    }
 }

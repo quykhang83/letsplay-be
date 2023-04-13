@@ -20,7 +20,6 @@ import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInLibraryException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.exception.InternalServerError;
-import com.ctu.exception.InvalidProductTypenameWebException;
 import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.Product;
 import com.ctu.model.User;
@@ -107,7 +106,7 @@ public class UserServiceImp implements UserService {
             User user = userDAO.getUserByEmail(email);
             products = user.getLibrary();
         } catch (EmptyEntityException e) {
-            throw new InvalidProductTypenameWebException(email);
+            
         }
         products.forEach((e) -> results.add(new ProductResponseDTO(e)));
         return results;

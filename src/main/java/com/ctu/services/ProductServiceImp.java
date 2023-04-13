@@ -19,6 +19,7 @@ import com.ctu.exception.IdNotFoundException;
 import com.ctu.exception.InvalidProductTypeNameException;
 import com.ctu.exception.InvalidProductTypenameWebException;
 import com.ctu.model.Product;
+import com.ctu.model.ProductDemo;
 import com.ctu.model.ProductType;
 
 @Stateless
@@ -64,9 +65,9 @@ public class ProductServiceImp implements ProductService {
 
         Product product = new Product(productPayload.getProductName(), productPayload.getProductPrice(),
                 productPayload.getProductDescription(), type, productPayload.getProductCapacity(), 0L);
-
-        productDAO.createProduct(product.getProductName(), product.getProductPrice(), product.getProductDescription(),
-                type, product.getProductCapacity(), product.getProductDownloads());
+        ProductDemo productDemo = new ProductDemo(productPayload.getProductDemoTitle(), productPayload.getProductDemoUrl());
+        product.addSingleProductDemo(productDemo);
+        productDAO.createProduct(product);
     }
 
     @Override
@@ -100,6 +101,10 @@ public class ProductServiceImp implements ProductService {
         }
         if (product.getProductCapacity() != null) {
             oldProduct.setProductCapacity(product.getProductCapacity());
+        }
+        if (product.getProductDemoTitle() != null && product.getProductDemoUrl() != null) {
+            ProductDemo productDemo = new ProductDemo(product.getProductDemoTitle(), product.getProductDemoUrl());
+            oldProduct.addSingleProductDemo(productDemo);
         }
 
         productDAO.updateProduct(oldProduct);

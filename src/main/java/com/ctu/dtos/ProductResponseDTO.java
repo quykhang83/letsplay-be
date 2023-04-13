@@ -1,6 +1,10 @@
 package com.ctu.dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ctu.model.Product;
+import com.ctu.model.ProductDemo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProductResponseDTO {
@@ -11,6 +15,7 @@ public class ProductResponseDTO {
     private String productTypeName;
     private Double productCapacity;
     private Long productDownloads;
+    private List<ProductDemo> productDemoUrls;
 
     public ProductResponseDTO() {
     }
@@ -23,6 +28,8 @@ public class ProductResponseDTO {
         this.productTypeName = product.getProductType().getProductTypeName();
         this.productCapacity = product.getProductCapacity();
         this.productDownloads = product.getProductDownloads();
+        this.productDemoUrls = new ArrayList<ProductDemo>();
+        product.getProductDemos().forEach((e) -> this.productDemoUrls.add(e));
     }
 
     @JsonIgnore
@@ -101,4 +108,13 @@ public class ProductResponseDTO {
         this.productId = productId;
     }
 
+    public List<ProductDemo> getProductDemoUrls() {
+        return productDemoUrls;
+    }
+
+    public void setProductDemoUrls(List<ProductDemo> productDemoUrls) {
+        this.productDemoUrls = productDemoUrls;
+    }
+
+    
 }

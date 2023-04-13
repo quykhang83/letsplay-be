@@ -1,6 +1,5 @@
 package com.ctu.dtos;
 
-import com.ctu.model.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProductReceiveDTO {
@@ -9,15 +8,10 @@ public class ProductReceiveDTO {
     private String productDescription;
     private String productTypeName;
     private Double productCapacity;
+    private String productDemoTitle;
+    private String productDemoUrl;
 
     public ProductReceiveDTO() {
-    }
-
-    public ProductReceiveDTO(Product product) {
-        this.productName = product.getProductName();
-        this.productPrice = product.getProductPrice();
-        this.productDescription = product.getProductDescription();
-        this.productCapacity = product.getProductCapacity();
     }
     
     @JsonIgnore
@@ -55,6 +49,12 @@ public class ProductReceiveDTO {
             return true;
         }
         if (this.productCapacity != null) {
+            return true;
+        }
+        if (this.productDemoTitle != null) {
+            return true;
+        }
+        if (this.productDemoUrl != null) {
             return true;
         }
         return false;
@@ -98,6 +98,22 @@ public class ProductReceiveDTO {
 
     public void setProductCapacity(Double productCapacity) {
         this.productCapacity = productCapacity;
+    }
+
+    public String getProductDemoTitle() {
+        return productDemoTitle;
+    }
+
+    public void setProductDemoTitle(String productDemoTitle) {
+        this.productDemoTitle = productDemoTitle;
+    }
+
+    public String getProductDemoUrl() {
+        return productDemoUrl;
+    }
+
+    public void setProductDemoUrl(String productDemoUrl) {
+        this.productDemoUrl = productDemoUrl;
     }
 
     
