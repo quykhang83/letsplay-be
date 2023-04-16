@@ -31,8 +31,8 @@ public class Comment {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    // @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
@@ -41,6 +41,34 @@ public class Comment {
     public Comment(String commentContent, Boolean commentRecomment) {
         this.commentContent = commentContent;
         this.commentRecomment = commentRecomment;
+    }
+
+    @JsonIgnore
+    public boolean isMissingKeys() {
+        if (this.commentContent == null) {
+            return true;
+        }
+        if (this.commentRecomment == null) {
+            return true;
+        }
+        return false;
+    }
+
+    @JsonIgnore
+    public boolean isUpdatable() {
+        if (this.commentContent != null) {
+            return true;
+        }
+        if (this.commentRecomment != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment [commentId=" + commentId + ", commentContent=" + commentContent + ", commentRecomment="
+                + commentRecomment + "]";
     }
 
     public Long getCommentId() {

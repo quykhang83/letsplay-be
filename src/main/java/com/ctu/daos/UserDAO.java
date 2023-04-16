@@ -96,7 +96,7 @@ public class UserDAO {
                 if (!user.setSingleProductToLibrary(product)) {
                     throw new ExitedProductInLibraryException(product.getProductName());
                 }
-                entityManager.merge(user);
+                else entityManager.merge(user);
             } catch (ExitedProductInLibraryException e) {
                 throw new ExitedProductInLibraryException(product.getProductName());
             }
@@ -112,7 +112,7 @@ public class UserDAO {
                 if (!user.unSetSingleProductToLibrary(product)) {
                     throw new NotExitedProductInLibraryException(product.getProductName());
                 }
-                entityManager.merge(user);
+                else entityManager.merge(user);
             } catch (NotExitedProductInLibraryException e) {
                 throw new NotExitedProductInLibraryException(product.getProductName());
             }

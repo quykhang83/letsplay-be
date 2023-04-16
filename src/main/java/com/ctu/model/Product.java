@@ -1,6 +1,8 @@
 package com.ctu.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -68,8 +70,9 @@ public class Product {
     @OneToMany(mappedBy = "product", targetEntity = ProductDemo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<ProductDemo> productDemos = new HashSet<ProductDemo>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", targetEntity = Comment.class, orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<Comment>();
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "library")
     private Set<User> users = new HashSet<>();
@@ -213,11 +216,13 @@ public class Product {
         productDemo.setProduct(this);
     }
 
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    
 }
