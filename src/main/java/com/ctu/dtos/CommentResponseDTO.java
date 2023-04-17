@@ -6,7 +6,7 @@ import com.ctu.model.User;
 public class CommentResponseDTO {
     private Long commentId;
     private String commentContent;
-    private Boolean commentRecomment;
+    private Boolean commentRecommend;
     private Long productId;
     private User user;
 
@@ -15,7 +15,7 @@ public class CommentResponseDTO {
     public CommentResponseDTO(Comment comment) {
         this.commentId = comment.getCommentId();
         this.commentContent = comment.getCommentContent();
-        this.commentRecomment = comment.getCommentRecomment();
+        this.commentRecommend = comment.getCommentRecomment();
         this.productId = comment.getProduct().getProductId();
         this.user = comment.getUser();
     }
@@ -36,12 +36,12 @@ public class CommentResponseDTO {
         this.commentContent = commentContent;
     }
 
-    public Boolean getCommentRecomment() {
-        return commentRecomment;
+    public Boolean getCommentRecommend() {
+        return commentRecommend;
     }
 
-    public void setCommentRecomment(Boolean commentRecomment) {
-        this.commentRecomment = commentRecomment;
+    public void setCommentRecommend(Boolean commentRecomment) {
+        this.commentRecommend = commentRecomment;
     }
 
     public Long getProductId() {

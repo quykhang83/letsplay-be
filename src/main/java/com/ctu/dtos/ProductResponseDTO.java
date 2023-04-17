@@ -15,7 +15,7 @@ public class ProductResponseDTO {
     private String productTypeName;
     private Double productCapacity;
     private Long productDownloads;
-    private List<ProductDemo> productDemoUrls;
+    private List<ProductDemo> productDemos;
 
     public ProductResponseDTO() {
     }
@@ -28,8 +28,8 @@ public class ProductResponseDTO {
         this.productTypeName = product.getProductType().getProductTypeName();
         this.productCapacity = product.getProductCapacity();
         this.productDownloads = product.getProductDownloads();
-        this.productDemoUrls = new ArrayList<ProductDemo>();
-        product.getProductDemos().forEach((e) -> this.productDemoUrls.add(e));
+        this.productDemos = new ArrayList<ProductDemo>();
+        product.getProductDemos().forEach((e) -> this.productDemos.add(e));
     }
 
     @JsonIgnore
@@ -108,12 +108,12 @@ public class ProductResponseDTO {
         this.productId = productId;
     }
 
-    public List<ProductDemo> getProductDemoUrls() {
-        return productDemoUrls;
+    public List<ProductDemo> getProductDemos() {
+        return productDemos;
     }
 
-    public void setProductDemoUrls(List<ProductDemo> productDemoUrls) {
-        this.productDemoUrls = productDemoUrls;
+    public void setProductDemos(List<ProductDemo> productDemoUrls) {
+        this.productDemos = productDemoUrls;
     }
 
     
