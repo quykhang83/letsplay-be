@@ -21,9 +21,9 @@ public interface UserService {
 
     public void deleteUser(Long id);
 
-    public void addProductToLibrary(Long productId) throws EmptyEntityException, ExitedProductInLibraryException;
+    public void addProductToLibrary(Long productId, String email) throws EmptyEntityException, ExitedProductInLibraryException;
 
-    public void removeProductFromLibrary(Long productId) throws EmptyEntityException, NotExitedProductInLibraryException;
+    public void removeProductFromLibrary(Long productId, String email) throws EmptyEntityException, NotExitedProductInLibraryException;
 
-    public List<ProductResponseDTO> getProductsInLibrary();
+    public List<ProductResponseDTO> getProductsInLibrary(String email);
 }

@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.microprofile.jwt.Claim;
 
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInLibraryException;
@@ -32,6 +33,9 @@ public class UserAPI {
 
     @Inject
     private UserService userService;
+    @Inject
+    @Claim("email")
+    private String email;
 
     @GET
     @Path("/")
@@ -61,7 +65,7 @@ public class UserAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProductToLibrary(@PathParam("id") Long idProduct) {
         try {
-            userService.addProductToLibrary(idProduct);
+            userService.addProductToLibrary(idProduct, email);
         } catch (EmptyEntityException e) {
             throw new WebApplicationException(
                     Response.status(400).entity(new Message("The product is not available!")).build());
@@ -80,7 +84,7 @@ public class UserAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeProductFromLibrary(@PathParam("id") Long idProduct) {
         try {
-            userService.removeProductFromLibrary(idProduct);
+            userService.removeProductFromLibrary(idProduct, email);
         } catch (EmptyEntityException e) {
             throw new WebApplicationException(
                     Response.status(400).entity(new Message("The product is not available!")).build());
@@ -99,6 +103,6 @@ public class UserAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductsInLibrary() {
         logger.info("Get library");
-        return Response.ok(userService.getProductsInLibrary()).build();
+        return Response.ok(userService.getProductsInLibrary(email)).build();
     }
 }

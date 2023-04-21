@@ -10,8 +10,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import org.eclipse.microprofile.jwt.Claim;
-
 import com.ctu.daos.ProductDAO;
 import com.ctu.daos.StatusDAO;
 import com.ctu.daos.UserDAO;
@@ -32,9 +30,6 @@ public class UserServiceImp implements UserService {
     StatusDAO statusDAO;
     @Inject
     ProductDAO productDAO;
-    @Inject
-    @Claim("email")
-    private String email;
 
     @Override
     public List<User> getAllUsers() {
@@ -84,14 +79,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void addProductToLibrary(Long productId) throws EmptyEntityException, ExitedProductInLibraryException {
+    public void addProductToLibrary(Long productId, String email) throws EmptyEntityException, ExitedProductInLibraryException {
         User user = userDAO.getUserByEmail(email);
         Product product = productDAO.getProductById(productId);
         userDAO.addProductToLibrary(user.getUserId(), product);
     }
 
     @Override
-    public void removeProductFromLibrary(Long productId) throws EmptyEntityException, NotExitedProductInLibraryException {
+    public void removeProductFromLibrary(Long productId, String email) throws EmptyEntityException, NotExitedProductInLibraryException {
         User user = userDAO.getUserByEmail(email);
         Product product = productDAO.getProductById(productId);
         userDAO.removeProductFromLibrary(user.getUserId(), product);
@@ -99,7 +94,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<ProductResponseDTO> getProductsInLibrary() {
+    public List<ProductResponseDTO> getProductsInLibrary(String email) {
         Set<Product> products = new HashSet<Product>();
         List<ProductResponseDTO> results = new ArrayList<ProductResponseDTO>();
         try {
