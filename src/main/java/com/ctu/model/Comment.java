@@ -1,5 +1,7 @@
 package com.ctu.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.ctu.utils.TimestampDeserializer;
+import com.ctu.utils.TimestampSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity(name = "Comments")
 @Table(name = "Comments", schema = "PUBLIC")
@@ -26,6 +32,11 @@ public class Comment {
     @Column(name = "commentRecomment")
     private Boolean commentRecomment;
 
+    @Column(name = "createdTime")
+    @JsonDeserialize(using = TimestampDeserializer.class)
+    @JsonSerialize(using = TimestampSerializer.class)
+    private Timestamp createdTime;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId", nullable = false)
@@ -38,9 +49,10 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(String commentContent, Boolean commentRecomment) {
+    public Comment(String commentContent, Boolean commentRecomment, Timestamp createdTime) {
         this.commentContent = commentContent;
         this.commentRecomment = commentRecomment;
+        this.createdTime = createdTime;
     }
 
     @JsonIgnore
@@ -109,6 +121,14 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
     }
 
     

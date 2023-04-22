@@ -1,7 +1,11 @@
 package com.ctu.dtos;
 
+import java.sql.Timestamp;
+
 import com.ctu.model.Comment;
 import com.ctu.model.User;
+import com.ctu.utils.TimestampSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class CommentResponseDTO {
     private Long commentId;
@@ -9,6 +13,9 @@ public class CommentResponseDTO {
     private Boolean commentRecommend;
     private Long productId;
     private User user;
+    
+    @JsonSerialize(using = TimestampSerializer.class)
+    private Timestamp createdTime;
 
     public CommentResponseDTO() {}
 
@@ -18,6 +25,7 @@ public class CommentResponseDTO {
         this.commentRecommend = comment.getCommentRecomment();
         this.productId = comment.getProduct().getProductId();
         this.user = comment.getUser();
+        this.createdTime = comment.getCreatedTime();
     }
 
     public Long getCommentId() {
@@ -60,5 +68,12 @@ public class CommentResponseDTO {
         this.user = user;
     }
 
-    
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
+    }
+
 }

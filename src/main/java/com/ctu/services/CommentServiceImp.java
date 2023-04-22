@@ -1,5 +1,8 @@
 package com.ctu.services;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -71,6 +74,8 @@ public class CommentServiceImp implements CommentService {
             User user = userDAO.getUserByEmail(email);
             comment.setProduct(product);
             comment.setUser(user);
+            Timestamp createdTime = Timestamp.from(Instant.now().truncatedTo(ChronoUnit.SECONDS));
+            comment.setCreatedTime(createdTime);
             commentDAO.createComment(comment);
         } catch (EmptyEntityException e) {
             throw new IdNotFoundException(productId);
