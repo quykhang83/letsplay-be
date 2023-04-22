@@ -9,7 +9,7 @@ CREATE TABLE PUBLIC.Comments (
     primary key (commentId)
 );
 
-INSERT INTO PUBLIC.Comments(commentContent, commentRecomment, productId, userId)
-VALUES ('It is really interesting! A great game!', true, '1', '1');
+-- INSERT INTO PUBLIC.Comments(commentContent, commentRecomment, productId, userId)
+-- VALUES ('It is really interesting! A great game!', true, '1', '1');
 
-SELECT * FROM PUBLIC.Comments;
+-- SELECT * FROM PUBLIC.Comments;
