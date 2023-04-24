@@ -18,10 +18,10 @@ CREATE TABLE PUBLIC.Devices (
     primary key (deviceId)
 );
 
-INSERT INTO PUBLIC.Users(userName, email)
-VALUES ('hqkhang', 'quykhang831@gmail.com');
-INSERT INTO PUBLIC.Users(userName, email)
-VALUES ('lca', 'luuca792@gmail.com');
+INSERT INTO PUBLIC.Users(userName, email, userAvt)
+VALUES ('hqkhang', 'quykhang831@gmail.com', 'https://firebasestorage.googleapis.com/v0/b/ctu-letsplay.appspot.com/o/Users%2Favatar2.jpg?alt=media&token=587d4c1e-769a-42c3-852d-cb8139a8ce46');
+INSERT INTO PUBLIC.Users(userName, email, userAvt)
+VALUES ('lca', 'luuca792@gmail.com', 'https://firebasestorage.googleapis.com/v0/b/ctu-letsplay.appspot.com/o/Users%2Favatar.jpg?alt=media&token=be0f169d-0b04-4ca6-b8bc-bbe7f64d2e8c');
 
 ALTER TABLE PUBLIC.Devices
 ADD CONSTRAINT user_id_devices_fk FOREIGN KEY (userId) REFERENCES Users (userId);
