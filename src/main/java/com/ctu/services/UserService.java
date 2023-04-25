@@ -3,6 +3,7 @@ package com.ctu.services;
 import java.util.List;
 
 import com.ctu.dtos.ProductResponseDTO;
+import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInLibraryException;
 import com.ctu.exception.NotExitedProductInLibraryException;
@@ -17,7 +18,7 @@ public interface UserService {
 
     public void createUser(User user);
 
-    public void updateUser(Long id, User user);
+    public void updateUser(UserReceiveDTO payload, String email) throws EmptyEntityException;
 
     public void deleteUser(Long id);
 
