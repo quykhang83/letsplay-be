@@ -5,8 +5,10 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.microprofile.jwt.Claim;
 
+import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInLibraryException;
 import com.ctu.exception.NotExitedProductInLibraryException;
@@ -45,6 +48,28 @@ public class UserAPI {
         logger.info("Get all users");
         return Response.ok(userService.getAllUsers()).build();
 
+    }
+
+    @PATCH
+    @Path("/")
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProduct(UserReceiveDTO userPayload) {
+        if (!userPayload.isUpdatable()) {
+            logger.error("User has no new key");
+            Message message = new Message("User has no new key");
+            throw new WebApplicationException(Response.status(400).entity(message).build());
+        }
+        try {
+            userService.updateUser(userPayload, email);
+        } catch (EmptyEntityException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("User is not valid!")).build());
+        }
+        logger.info("User " + email + " was updated successfully");
+        Message message = new Message("User was updated successfully");
+        return Response.ok(message).build();
     }
 
     @DELETE

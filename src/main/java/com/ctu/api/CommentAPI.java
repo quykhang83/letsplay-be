@@ -1,9 +1,5 @@
 package com.ctu.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
