@@ -68,7 +68,7 @@ public class Product {
     
     // @JsonIgnore
     @OneToMany(mappedBy = "product", targetEntity = ProductDemo.class, orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<ProductDemo> productDemos = new HashSet<ProductDemo>();
+    private List<ProductDemo> productDemos = new ArrayList<ProductDemo>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", targetEntity = Comment.class, orphanRemoval = true, cascade = CascadeType.ALL)
@@ -76,6 +76,9 @@ public class Product {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "library")
     private Set<User> users = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "cartDetails")
+    private Set<Cart> carts = new HashSet<>();
 
 
     public Product() {
@@ -203,14 +206,6 @@ public class Product {
         this.users = users;
     }
 
-    public Set<ProductDemo> getProductDemos() {
-        return productDemos;
-    }
-
-    public void setProductDemos(Set<ProductDemo> productDemos) {
-        this.productDemos = productDemos;
-    }
-
     public void addSingleProductDemo(ProductDemo productDemo){
         this.productDemos.add(productDemo);
         productDemo.setProduct(this);
@@ -222,6 +217,22 @@ public class Product {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<ProductDemo> getProductDemos() {
+        return productDemos;
+    }
+
+    public void setProductDemos(List<ProductDemo> productDemos) {
+        this.productDemos = productDemos;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
     }
 
     

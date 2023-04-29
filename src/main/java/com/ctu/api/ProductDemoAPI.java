@@ -1,40 +1,46 @@
 package com.ctu.api;
 
 import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ctu.exception.EmptyEntityException;
 import com.ctu.model.Message;
 import com.ctu.services.ProductDemoService;
 
 @Path("/product-demos")
-@RequestScoped
 @DenyAll
-
 public class ProductDemoAPI {
     private static final Logger logger = LogManager.getLogger(ProductDemoAPI.class);
 
     @Inject
     ProductDemoService productDemoService;
 
-    // @GET
-    // @Path("/")
-    // @PermitAll
-    // @Produces(MediaType.APPLICATION_JSON)
-    // public Response getAllProductTypes() {
-    //     logger.info("Get all product type");
-    //     return Response.ok(productTypeService.getAllProductTypes()).build();
-    // }
+    @GET
+    @Path("/product/{id}")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductDemosByProductId(@PathParam("id") Long id) {
+        logger.info("Get productDemos with productId: " + id);
+        try {
+            return Response.ok(productDemoService.getProductDemosByProductId(id)).build();
+        } catch (EmptyEntityException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product with id: " + id + " is not exit!")).build());
+        }
+    }
 
     // @PATCH
     // @Path("/{idProduct}")
