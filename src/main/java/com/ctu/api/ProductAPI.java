@@ -31,10 +31,8 @@ import org.apache.logging.log4j.Logger;
 import com.ctu.dtos.ProductReceiveDTO;
 import com.ctu.exception.InvalidProductTypeNameException;
 import com.ctu.exception.InvalidProductTypenameWebException;
-import com.ctu.firebase.FirebaseMessagingSnippets;
 import com.ctu.model.Message;
 import com.ctu.services.ProductService;
-import com.google.firebase.messaging.FirebaseMessagingException;
 
 @Path("/products")
 @RequestScoped

@@ -1,7 +1,5 @@
 package com.ctu.api;
 
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -23,14 +21,15 @@ import org.eclipse.microprofile.jwt.Claim;
 
 import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInCartException;
 import com.ctu.exception.ExitedProductInLibraryException;
+import com.ctu.exception.NotExitedProductInCartException;
 import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.Message;
 import com.ctu.services.UserService;
 
 @Path("/users")
 @RequestScoped
-@DenyAll
 public class UserAPI {
     private static final Logger logger = LogManager.getLogger(UserAPI.class);
 
@@ -52,10 +51,9 @@ public class UserAPI {
 
     @PATCH
     @Path("/")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProduct(UserReceiveDTO userPayload) {
+    public Response updateUser(UserReceiveDTO userPayload) {
         if (!userPayload.isUpdatable()) {
             logger.error("User has no new key");
             Message message = new Message("User has no new key");
@@ -84,9 +82,16 @@ public class UserAPI {
 
     }
 
+    @GET
+    @Path("/library")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsInLibrary() {
+        logger.info("Get library");
+        return Response.ok(userService.getProductsInLibrary(email)).build();
+    }
+
     @POST
     @Path("/library/product/{id}/save")
-    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProductToLibrary(@PathParam("id") Long idProduct) {
         try {
@@ -105,7 +110,6 @@ public class UserAPI {
 
     @POST
     @Path("/library/product/{id}/remove")
-    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeProductFromLibrary(@PathParam("id") Long idProduct) {
         try {
@@ -123,11 +127,46 @@ public class UserAPI {
     }
 
     @GET
-    @Path("/library")
-    @PermitAll
+    @Path("/cart")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductsInLibrary() {
-        logger.info("Get library");
-        return Response.ok(userService.getProductsInLibrary(email)).build();
+    public Response getCartInfo() {
+        logger.info("Get cart info");
+        return Response.ok(userService.getCartInfo(email)).build();
+    }
+
+    @POST
+    @Path("/cart/product/{id}/save")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addProductToCart(@PathParam("id") Long idProduct) {
+        try {
+            userService.addProductToCart(idProduct, email);
+        } catch (EmptyEntityException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product is not available!")).build());
+        } catch (ExitedProductInCartException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product already exists in the cart!")).build());
+        }
+        logger.info("Product " + idProduct + " was added to cart");
+        Message message = new Message("Product " + idProduct + " was added to cart");
+        return Response.ok(message).build();
+    }
+
+    @POST
+    @Path("/cart/product/{id}/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeProductFromCart(@PathParam("id") Long idProduct) {
+        try {
+            userService.removeProductFromCart(idProduct, email);
+        } catch (EmptyEntityException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product is not available!")).build());
+        } catch (NotExitedProductInCartException e) {
+            throw new WebApplicationException(
+                    Response.status(400).entity(new Message("The product is not existed in the cart!")).build());
+        }
+        logger.info("Product " + idProduct + " was removed from cart");
+        Message message = new Message("Product " + idProduct + " was removed from cart");
+        return Response.ok(message).build();
     }
 }

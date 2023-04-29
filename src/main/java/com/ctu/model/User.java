@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,9 +62,10 @@ public class User {
                     @JoinColumn(name = "productId", nullable = false, updatable = false) })
     private Set<Product> library = new HashSet<>();
 
-    // @OneToMany(mappedBy = "user", targetEntity = Request.class, fetch =
-    // FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    // private List<Request> requests = new ArrayList<>();
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Cart cart;
 
     public User() {
     }
@@ -158,6 +161,14 @@ public class User {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
     
 }

@@ -8,8 +8,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInCartException;
 import com.ctu.exception.ExitedProductInLibraryException;
+import com.ctu.exception.NotExitedProductInCartException;
 import com.ctu.exception.NotExitedProductInLibraryException;
+import com.ctu.model.Cart;
 import com.ctu.model.Product;
 import com.ctu.model.User;
 
@@ -19,6 +22,8 @@ public class UserDAO {
 
     public void createUser(String username, String email) {
         User user = new User(username, email);
+        Cart cart = new Cart(0L, 0.0, user);
+        user.setCart(cart);
         try {
             entityManager.persist(user);
         } catch (Exception e) {
@@ -115,6 +120,38 @@ public class UserDAO {
                 else entityManager.merge(user);
             } catch (NotExitedProductInLibraryException e) {
                 throw new NotExitedProductInLibraryException(product.getProductName());
+            }
+        } catch (EmptyEntityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addProductToCart(Long userId, Product product) throws ExitedProductInCartException{
+        try {
+            User user = getUserById(userId);
+            try {
+                if (!user.getCart().addProductToCart(product)) {
+                    throw new ExitedProductInLibraryException(product.getProductName());
+                }
+                else entityManager.merge(user);
+            } catch (ExitedProductInLibraryException e) {
+                throw new ExitedProductInCartException(product.getProductName());
+            }
+        } catch (EmptyEntityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeProductFromCart(Long userId, Product product) throws NotExitedProductInCartException {
+        try {
+            User user = getUserById(userId);
+            try {
+                if (!user.getCart().removeProductFromCart(product)) {
+                    throw new NotExitedProductInLibraryException(product.getProductName());
+                }
+                else entityManager.merge(user);
+            } catch (NotExitedProductInLibraryException e) {
+                throw new NotExitedProductInCartException(product.getProductName());
             }
         } catch (EmptyEntityException e) {
             e.printStackTrace();

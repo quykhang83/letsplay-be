@@ -2,10 +2,13 @@ package com.ctu.services;
 
 import java.util.List;
 
+import com.ctu.dtos.CartResponseDTO;
 import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInCartException;
 import com.ctu.exception.ExitedProductInLibraryException;
+import com.ctu.exception.NotExitedProductInCartException;
 import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.User;
 
@@ -22,9 +25,15 @@ public interface UserService {
 
     public void deleteUser(Long id);
 
+    public List<ProductResponseDTO> getProductsInLibrary(String email);
+
     public void addProductToLibrary(Long productId, String email) throws EmptyEntityException, ExitedProductInLibraryException;
 
     public void removeProductFromLibrary(Long productId, String email) throws EmptyEntityException, NotExitedProductInLibraryException;
 
-    public List<ProductResponseDTO> getProductsInLibrary(String email);
+    public CartResponseDTO getCartInfo(String email);
+
+    public void addProductToCart(Long productId, String email) throws EmptyEntityException, ExitedProductInCartException;
+
+    public void removeProductFromCart(Long productId, String email) throws EmptyEntityException, NotExitedProductInCartException;
 }

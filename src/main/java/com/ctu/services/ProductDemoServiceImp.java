@@ -1,8 +1,7 @@
 package com.ctu.services;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -44,16 +43,17 @@ public class ProductDemoServiceImp implements ProductDemoService{
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Set<ProductDemo> getProductDemoByProductId(Long productId) {
-        Set<ProductDemo> productDemos = new HashSet<ProductDemo>();
+    public List<ProductDemo> getProductDemosByProductId(Long productId) throws EmptyEntityException{
+        List<ProductDemo> productDemos = new ArrayList<ProductDemo>();
+        List<ProductDemo> result = new ArrayList<ProductDemo>();
         try {
             Product product = productDAO.getProductById(productId);
             productDemos = product.getProductDemos();
         } catch (EmptyEntityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new IdNotFoundException(productId);
         }
-        return productDemos;
+        productDemos.forEach((e) -> result.add(e));
+        return result;
     }
 
     @Override

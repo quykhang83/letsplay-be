@@ -1,8 +1,8 @@
 package com.ctu.services;
 
 import java.util.List;
-import java.util.Set;
 
+import com.ctu.exception.EmptyEntityException;
 import com.ctu.model.ProductDemo;
 
 public interface ProductDemoService {
@@ -10,7 +10,7 @@ public interface ProductDemoService {
 
     public ProductDemo getProductDemoById(final Long id);
 
-    public Set<ProductDemo> getProductDemoByProductId(final Long productId);
+    public List<ProductDemo> getProductDemosByProductId(final Long productId) throws EmptyEntityException;
 
     public void createProductDemo(final ProductDemo productDemo);
 

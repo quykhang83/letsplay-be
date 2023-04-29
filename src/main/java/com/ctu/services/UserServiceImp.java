@@ -13,13 +13,17 @@ import javax.inject.Inject;
 import com.ctu.daos.ProductDAO;
 import com.ctu.daos.StatusDAO;
 import com.ctu.daos.UserDAO;
+import com.ctu.dtos.CartResponseDTO;
 import com.ctu.dtos.ProductResponseDTO;
 import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
+import com.ctu.exception.ExitedProductInCartException;
 import com.ctu.exception.ExitedProductInLibraryException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.exception.InternalServerError;
+import com.ctu.exception.NotExitedProductInCartException;
 import com.ctu.exception.NotExitedProductInLibraryException;
+import com.ctu.model.Cart;
 import com.ctu.model.Product;
 import com.ctu.model.User;
 
@@ -62,6 +66,7 @@ public class UserServiceImp implements UserService {
     public void createUser(User user) {
         try {
             userDAO.createUser(user.getUsername(), user.getEmail());
+
         } catch (Exception ex) {
             throw new InternalServerError(ex.getMessage());
         }
@@ -92,6 +97,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ProductResponseDTO> getProductsInLibrary(String email) {
+        Set<Product> products = new HashSet<Product>();
+        List<ProductResponseDTO> results = new ArrayList<ProductResponseDTO>();
+        try {
+            User user = userDAO.getUserByEmail(email);
+            products = user.getLibrary();
+        } catch (EmptyEntityException e) {
+
+        }
+        products.forEach((e) -> results.add(new ProductResponseDTO(e)));
+        return results;
+    }
+
+    @Override
     public void addProductToLibrary(Long productId, String email)
             throws EmptyEntityException, ExitedProductInLibraryException {
         User user = userDAO.getUserByEmail(email);
@@ -109,17 +129,33 @@ public class UserServiceImp implements UserService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<ProductResponseDTO> getProductsInLibrary(String email) {
-        Set<Product> products = new HashSet<Product>();
-        List<ProductResponseDTO> results = new ArrayList<ProductResponseDTO>();
+    public CartResponseDTO getCartInfo(String email) {
+        Cart cart = new Cart();
         try {
             User user = userDAO.getUserByEmail(email);
-            products = user.getLibrary();
+            cart = user.getCart();
         } catch (EmptyEntityException e) {
 
         }
-        products.forEach((e) -> results.add(new ProductResponseDTO(e)));
+        
+        CartResponseDTO results = new CartResponseDTO(cart);
         return results;
+    }
+
+    @Override
+    public void addProductToCart(Long productId, String email)
+            throws EmptyEntityException, ExitedProductInCartException {
+        User user = userDAO.getUserByEmail(email);
+        Product product = productDAO.getProductById(productId);
+        userDAO.addProductToCart(user.getUserId(), product);
+    }
+
+    @Override
+    public void removeProductFromCart(Long productId, String email)
+            throws EmptyEntityException, NotExitedProductInCartException {
+        User user = userDAO.getUserByEmail(email);
+        Product product = productDAO.getProductById(productId);
+        userDAO.removeProductFromCart(user.getUserId(), product);
     }
 
 }
