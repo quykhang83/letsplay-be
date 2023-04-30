@@ -11,10 +11,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import com.ctu.daos.ProductDAO;
-import com.ctu.daos.StatusDAO;
 import com.ctu.daos.UserDAO;
 import com.ctu.dtos.CartResponseDTO;
-import com.ctu.dtos.ProductResponseDTO;
+import com.ctu.dtos.ProductResponseFullDemosDTO;
 import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInCartException;
@@ -31,8 +30,6 @@ import com.ctu.model.User;
 public class UserServiceImp implements UserService {
     @Inject
     UserDAO userDAO;
-    @Inject
-    StatusDAO statusDAO;
     @Inject
     ProductDAO productDAO;
 
@@ -98,16 +95,16 @@ public class UserServiceImp implements UserService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<ProductResponseDTO> getProductsInLibrary(String email) {
+    public List<ProductResponseFullDemosDTO> getProductsInLibrary(String email) {
         Set<Product> products = new HashSet<Product>();
-        List<ProductResponseDTO> results = new ArrayList<ProductResponseDTO>();
+        List<ProductResponseFullDemosDTO> results = new ArrayList<ProductResponseFullDemosDTO>();
         try {
             User user = userDAO.getUserByEmail(email);
             products = user.getLibrary();
         } catch (EmptyEntityException e) {
 
         }
-        products.forEach((e) -> results.add(new ProductResponseDTO(e)));
+        products.forEach((e) -> results.add(new ProductResponseFullDemosDTO(e)));
         return results;
     }
 
