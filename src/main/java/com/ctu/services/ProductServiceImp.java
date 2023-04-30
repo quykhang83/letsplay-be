@@ -14,6 +14,7 @@ import com.ctu.daos.ProductDAO;
 import com.ctu.daos.ProductTypeDAO;
 import com.ctu.dtos.ProductReceiveDTO;
 import com.ctu.dtos.ProductResponseDTO;
+import com.ctu.dtos.ProductResponseFullDemosDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.exception.InvalidProductTypeNameException;
@@ -46,13 +47,13 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductResponseDTO getProductById(Long id) {
+    public ProductResponseFullDemosDTO getProductById(Long id) {
         if (id < 1) {
             throw new IdNotFoundException(id);
         }
         try {
             Product product = productDAO.getProductById(id);
-            return new ProductResponseDTO(product);
+            return new ProductResponseFullDemosDTO(product);
         } catch (EmptyEntityException e) {
             throw new IdNotFoundException(id);
         }

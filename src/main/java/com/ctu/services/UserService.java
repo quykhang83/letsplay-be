@@ -3,7 +3,7 @@ package com.ctu.services;
 import java.util.List;
 
 import com.ctu.dtos.CartResponseDTO;
-import com.ctu.dtos.ProductResponseDTO;
+import com.ctu.dtos.ProductResponseFullDemosDTO;
 import com.ctu.dtos.UserReceiveDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInCartException;
@@ -25,7 +25,7 @@ public interface UserService {
 
     public void deleteUser(Long id);
 
-    public List<ProductResponseDTO> getProductsInLibrary(String email);
+    public List<ProductResponseFullDemosDTO> getProductsInLibrary(String email);
 
     public void addProductToLibrary(Long productId, String email) throws EmptyEntityException, ExitedProductInLibraryException;
 
