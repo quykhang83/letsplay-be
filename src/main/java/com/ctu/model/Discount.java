@@ -1,16 +1,24 @@
 package com.ctu.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.ctu.dtos.DiscountReceiveDTO;
 import com.ctu.utils.TimestampDeserializer;
 import com.ctu.utils.TimestampSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -44,19 +52,31 @@ public class Discount {
     @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp toDate;
 
-
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "DiscountDetails", joinColumns = {
+            @JoinColumn(name = "discountId", nullable = false, updatable = false) }, inverseJoinColumns = {
+                    @JoinColumn(name = "productId", nullable = false, updatable = false) })
+    private Set<Product> saleProducts = new HashSet<>();
 
     public Discount() {
     }
 
-    public Discount(Long discountId, String discountName, Float discountPercent, String discountDescription,
+    public Discount(String discountName, Float discountPercent, String discountDescription,
             Timestamp fromDate, Timestamp toDate) {
-        this.discountId = discountId;
         this.discountName = discountName;
         this.discountPercent = discountPercent;
         this.discountDescription = discountDescription;
         this.fromDate = fromDate;
         this.toDate = toDate;
+    }
+
+    public Discount(DiscountReceiveDTO payload) {
+        this.discountName = payload.getDiscountName();
+        this.discountPercent = payload.getDiscountPercent();
+        this.discountDescription = payload.getDiscountDescription();
+        this.fromDate = payload.getFromDate();
+        this.toDate = payload.getToDate();
     }
 
     public Long getDiscountId() {
@@ -107,4 +127,19 @@ public class Discount {
         this.toDate = toDate;
     }
 
+    public Set<Product> getSaleProducts() {
+        return saleProducts;
+    }
+
+    public void setSaleProducts(Set<Product> saleProducts) {
+        this.saleProducts = saleProducts;
+    }
+
+    public boolean addProductToDiscount(Product product) {
+        return this.saleProducts.add(product);
+    }
+
+    public boolean removeProductFromDiscount(Product product) {
+        return this.saleProducts.remove(product);
+    } 
 }
