@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ctu.model.Discount;
-import com.ctu.utils.TimestampDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.ctu.utils.TimestampSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class DiscountResponseDTO {
     private String discountName;
@@ -14,10 +14,10 @@ public class DiscountResponseDTO {
     private String discountDescription;
     private List<ProductResponseDTO> products;
 
-    @JsonDeserialize(using = TimestampDeserializer.class)
+    @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp fromDate;
 
-    @JsonDeserialize(using = TimestampDeserializer.class)
+    @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp toDate;
 
     public DiscountResponseDTO() {
