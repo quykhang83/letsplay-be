@@ -8,6 +8,7 @@ public class ProductResponseDTO {
     private Long productId;
     private String productName;
     private Double productPrice;
+    private Long productPriceDiscount;
     private String productDescription;
     private String productTypeName;
     private Double productCapacity;
@@ -30,6 +31,8 @@ public class ProductResponseDTO {
         this.productDemo = product.getProductDemos().stream().filter(e -> e.getProductDemoTitle().equals("header"))
                 .findFirst().get();
         // this.productDemo = product.getProductDemos().get(0);
+        if (product.getDiscounts().isEmpty()) this.productPriceDiscount = null;
+        else this.productPriceDiscount = (long) (product.getProductPrice()*(1-product.getDiscounts().get(0).getDiscountPercent()));
     }
 
     @JsonIgnore
@@ -114,6 +117,14 @@ public class ProductResponseDTO {
 
     public void setProductDemo(ProductDemo productDemo) {
         this.productDemo = productDemo;
+    }
+
+    public Long getProductPriceDiscount() {
+        return productPriceDiscount;
+    }
+
+    public void setProductPriceDiscount(Long productPriceDiscount) {
+        this.productPriceDiscount = productPriceDiscount;
     }
 
 }

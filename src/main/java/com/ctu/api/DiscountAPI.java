@@ -53,7 +53,7 @@ public class DiscountAPI {
     @RolesAllowed({ "manager" })
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createProduct(DiscountReceiveDTO discountPayload) {
+    public Response createDiscount(DiscountReceiveDTO discountPayload) {
         if (discountPayload.isMissingKeys()) {
             logger.error("Missing keys in discount body");
             Message errMsg = new Message("Missing keys in discount body");

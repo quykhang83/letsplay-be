@@ -68,7 +68,7 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
-    public void createComment(Long productId, Comment comment, String email) {
+    public Comment createComment(Long productId, Comment comment, String email) {
         try {
             Product product = productDAO.getProductById(productId);
             User user = userDAO.getUserByEmail(email);
@@ -80,7 +80,7 @@ public class CommentServiceImp implements CommentService {
         } catch (EmptyEntityException e) {
             throw new IdNotFoundException(productId);
         }
-
+        return comment;
     }
 
     @Override

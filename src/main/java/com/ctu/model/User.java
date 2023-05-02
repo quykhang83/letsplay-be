@@ -1,6 +1,8 @@
 package com.ctu.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -66,6 +68,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Cart cart;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = Receipt.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Receipt> receipts = new ArrayList<>();
 
     public User() {
     }
@@ -169,6 +175,14 @@ public class User {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public List<Receipt> getReceipts() {
+        return receipts;
+    }
+
+    public void setReceipts(List<Receipt> receipts) {
+        this.receipts = receipts;
     }
     
 }

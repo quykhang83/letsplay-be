@@ -81,7 +81,10 @@ public class Product {
     private Set<Cart> carts = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "saleProducts")
-    private Set<Discount> discounts = new HashSet<>();
+    private List<Discount> discounts = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "receiptDetails")
+    private List<Receipt> receipts = new ArrayList<>();
 
     public Product() {
     }
@@ -237,12 +240,20 @@ public class Product {
         this.carts = carts;
     }
 
-    public Set<Discount> getDiscounts() {
+    public List<Discount> getDiscounts() {
         return discounts;
     }
 
-    public void setDiscounts(Set<Discount> discounts) {
+    public void setDiscounts(List<Discount> discounts) {
         this.discounts = discounts;
+    }
+
+    public List<Receipt> getReceipts() {
+        return receipts;
+    }
+
+    public void setReceipts(List<Receipt> receipts) {
+        this.receipts = receipts;
     }
 
 }
