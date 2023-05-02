@@ -11,6 +11,7 @@ public class ProductResponseFullDemosDTO {
     private Long productId;
     private String productName;
     private Double productPrice;
+    private Long productPriceDiscount;
     private String productDescription;
     private String productTypeName;
     private Double productCapacity;
@@ -30,6 +31,8 @@ public class ProductResponseFullDemosDTO {
         this.productDownloads = product.getProductDownloads();
         this.productDemos = new ArrayList<ProductDemo>();
         product.getProductDemos().forEach((e) -> this.productDemos.add(e));
+        if (product.getDiscounts().isEmpty()) this.productPriceDiscount = null;
+        else this.productPriceDiscount = (long) (product.getProductPrice()*(1-product.getDiscounts().get(0).getDiscountPercent()));
     }
 
     @JsonIgnore
@@ -111,6 +114,14 @@ public class ProductResponseFullDemosDTO {
 
     public void setProductDemos(List<ProductDemo> productDemos) {
         this.productDemos = productDemos;
+    }
+
+    public Long getProductPriceDiscount() {
+        return productPriceDiscount;
+    }
+
+    public void setProductPriceDiscount(Long productPriceDiscount) {
+        this.productPriceDiscount = productPriceDiscount;
     }
 
 }

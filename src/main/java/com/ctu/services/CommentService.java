@@ -14,7 +14,7 @@ public interface CommentService {
 
     public List<CommentResponseDTO> getCommentByProductId(final Long productId);
 
-    public void createComment(final Long productId, final Comment comment, final String email);
+    public Comment createComment(final Long productId, final Comment comment, final String email);
 
     public void updateComment(Long idComment, Comment comment, final String email) throws InvalidUserCommentException;
 

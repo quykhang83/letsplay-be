@@ -95,7 +95,7 @@ public class Cart {
         if (isAdded) {
             this.cartDetails.add(product);
             this.cartTotal++;
-            this.cartPrice += product.getProductPrice();
+            this.cartPrice += product.getProductPrice() * (1 - product.getDiscounts().get(0).getDiscountPercent());
         }
         return isAdded;
     }
@@ -104,8 +104,14 @@ public class Cart {
         boolean isRemoved = this.cartDetails.remove(product);
         if (isRemoved) {
             this.cartTotal--;
-            this.cartPrice -= product.getProductPrice();
+            this.cartPrice -= product.getProductPrice() * (1 - product.getDiscounts().get(0).getDiscountPercent());
         }
         return isRemoved;
+    }
+    
+    public void clearCart() {
+        this.cartPrice = 0.0;
+        this.cartTotal = 0L;
+        this.cartDetails = new ArrayList<>();
     }
 }

@@ -54,6 +54,7 @@ public class CommentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createComment(@PathParam("id") Long productId, Comment comment) {
+        Comment createdComment = new Comment();
         if (comment.isMissingKeys()) {
             logger.error("Missing keys in comment body");
             Message errMsg = new Message("Missing keys in comment body");
@@ -62,7 +63,7 @@ public class CommentAPI {
         try {
             try {
                 userDAO.getUserByEmail(email);
-                commentService.createComment(productId, comment, email);
+                createdComment = commentService.createComment(productId, comment, email);
             } catch (EmptyEntityException e1) {
                 logger.error("User is invalid!");
                 Message message = new Message("User is invalid!");
@@ -74,9 +75,9 @@ public class CommentAPI {
             throw new WebApplicationException(Response.status(400).entity(message).build());
         }
         logger.info("Comment was created successfully");
-        Message message = new Message("Comment was created successfully");
+        // Message message = new Message("Comment was created successfully");
 
-        return Response.ok(message).build();
+        return Response.ok(createdComment).build();
     }
 
     @GET
