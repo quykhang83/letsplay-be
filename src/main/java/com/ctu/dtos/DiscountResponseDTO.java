@@ -12,7 +12,7 @@ public class DiscountResponseDTO {
     private String discountName;
     private Float discountPercent;
     private String discountDescription;
-    private List<ProductResponseDTO> products;
+    private List<ProductResponseDiscountDTO> products;
 
     @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp fromDate;
@@ -27,8 +27,9 @@ public class DiscountResponseDTO {
         this.discountName = discount.getDiscountName();
         this.discountPercent = discount.getDiscountPercent();
         this.discountDescription = discount.getDiscountDescription();
-        this.products = new ArrayList<ProductResponseDTO>();
-        discount.getSaleProducts().forEach((e)->this.products.add(new ProductResponseDTO(e)));
+        this.products = new ArrayList<ProductResponseDiscountDTO>();
+        discount.getSaleProducts()
+                .forEach((e) -> this.products.add(new ProductResponseDiscountDTO(e, discount.getDiscountPercent())));
         this.fromDate = discount.getFromDate();
         this.toDate = discount.getToDate();
     }
@@ -57,11 +58,11 @@ public class DiscountResponseDTO {
         this.discountDescription = discountDescription;
     }
 
-    public List<ProductResponseDTO> getProducts() {
+    public List<ProductResponseDiscountDTO> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductResponseDTO> products) {
+    public void setProducts(List<ProductResponseDiscountDTO> products) {
         this.products = products;
     }
 
@@ -81,5 +82,4 @@ public class DiscountResponseDTO {
         this.toDate = toDate;
     }
 
-    
 }
