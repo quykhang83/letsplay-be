@@ -80,6 +80,8 @@ public class Product {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "cartDetails")
     private Set<Cart> carts = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "saleProducts")
+    private Set<Discount> discounts = new HashSet<>();
 
     public Product() {
     }
@@ -235,5 +237,12 @@ public class Product {
         this.carts = carts;
     }
 
-    
+    public Set<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Set<Discount> discounts) {
+        this.discounts = discounts;
+    }
+
 }
