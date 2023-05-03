@@ -140,6 +140,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void addProductToCart(Long productId, String email)
             throws EmptyEntityException, ExitedProductInCartException {
         User user = userDAO.getUserByEmail(email);
@@ -148,6 +149,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void removeProductFromCart(Long productId, String email)
             throws EmptyEntityException, NotExitedProductInCartException {
         User user = userDAO.getUserByEmail(email);

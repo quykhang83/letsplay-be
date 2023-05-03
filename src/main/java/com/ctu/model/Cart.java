@@ -95,7 +95,8 @@ public class Cart {
         if (isAdded) {
             this.cartDetails.add(product);
             this.cartTotal++;
-            this.cartPrice += product.getProductPrice() * (1 - product.getDiscounts().get(0).getDiscountPercent());
+            if (product.getDiscounts().isEmpty()) this.cartPrice += product.getProductPrice();
+            else this.cartPrice += product.getProductPrice() * (1 - product.getDiscounts().get(0).getDiscountPercent());
         }
         return isAdded;
     }
@@ -104,7 +105,8 @@ public class Cart {
         boolean isRemoved = this.cartDetails.remove(product);
         if (isRemoved) {
             this.cartTotal--;
-            this.cartPrice -= product.getProductPrice() * (1 - product.getDiscounts().get(0).getDiscountPercent());
+            if (product.getDiscounts().isEmpty()) this.cartPrice -= product.getProductPrice();
+            else this.cartPrice -= product.getProductPrice() * (1 - product.getDiscounts().get(0).getDiscountPercent());
         }
         return isRemoved;
     }
