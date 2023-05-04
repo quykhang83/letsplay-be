@@ -27,6 +27,8 @@ public interface UserService {
 
     public List<ProductResponseFullDemosDTO> getProductsInLibrary(String email);
 
+    public List<ProductResponseFullDemosDTO> getProductsInLibraryByUserId(Long userId);
+
     public void addProductToLibrary(Long productId, String email) throws EmptyEntityException, ExitedProductInLibraryException;
 
     public void removeProductFromLibrary(Long productId, String email) throws EmptyEntityException, NotExitedProductInLibraryException;

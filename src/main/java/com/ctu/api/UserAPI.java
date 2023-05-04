@@ -1,5 +1,6 @@
 package com.ctu.api;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ import com.ctu.exception.ExitedProductInLibraryException;
 import com.ctu.exception.NotExitedProductInCartException;
 import com.ctu.exception.NotExitedProductInLibraryException;
 import com.ctu.model.Message;
+import com.ctu.model.User;
 import com.ctu.services.UserService;
 
 @Path("/users")
@@ -47,6 +49,17 @@ public class UserAPI {
         logger.info("Get all users");
         return Response.ok(userService.getAllUsers()).build();
 
+    }
+
+    @GET
+    @Path("/{id}")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserInfoByUserId(@PathParam("id") Long idUser) {
+        User user = null;
+        user = userService.getUserById(idUser);
+
+        return Response.ok(user).build();
     }
 
     @PATCH
@@ -88,6 +101,15 @@ public class UserAPI {
     public Response getProductsInLibrary() {
         logger.info("Get library");
         return Response.ok(userService.getProductsInLibrary(email)).build();
+    }
+
+    @GET
+    @Path("/library/{id}")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsInLibraryByUserId(@PathParam("id") Long idUser) {
+        logger.info("Get library of user id: " + idUser);
+        return Response.ok(userService.getProductsInLibraryByUserId(idUser)).build();
     }
 
     @POST
