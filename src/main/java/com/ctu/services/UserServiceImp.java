@@ -108,6 +108,22 @@ public class UserServiceImp implements UserService {
         return results;
     }
 
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ProductResponseFullDemosDTO> getProductsInLibraryByUserId(Long userId) {
+        Set<Product> products = new HashSet<Product>();
+        List<ProductResponseFullDemosDTO> results = new ArrayList<ProductResponseFullDemosDTO>();
+        try {
+            User user = userDAO.getUserById(userId);
+            products = user.getLibrary();
+        } catch (EmptyEntityException e) {
+
+        }
+        products.forEach((e) -> results.add(new ProductResponseFullDemosDTO(e)));
+        return results;
+    }
+
     @Override
     public void addProductToLibrary(Long productId, String email)
             throws EmptyEntityException, ExitedProductInLibraryException {
