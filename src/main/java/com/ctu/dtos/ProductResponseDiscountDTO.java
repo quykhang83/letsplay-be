@@ -1,11 +1,13 @@
 package com.ctu.dtos;
 
 import com.ctu.model.Product;
+import com.ctu.model.ProductDemo;
 
 public class ProductResponseDiscountDTO {
     private Long productId;
     private Double productPrice;
     private Long productPriceDiscount;
+    private ProductDemo productDemo;
 
     public ProductResponseDiscountDTO() {
     }
@@ -13,7 +15,9 @@ public class ProductResponseDiscountDTO {
     public ProductResponseDiscountDTO(Product product, Float discountPercent) {
         this.productId = product.getProductId();
         this.productPrice = product.getProductPrice();
-        this.productPriceDiscount = (long) (product.getProductPrice()*(1-discountPercent));
+        this.productDemo = product.getProductDemos().stream().filter(e -> e.getProductDemoTitle().equals("header"))
+                .findFirst().get();
+        this.productPriceDiscount = (long) (Math.round(product.getProductPrice()) * (1 - discountPercent));
     }
 
     public Long getProductId() {
@@ -39,5 +43,13 @@ public class ProductResponseDiscountDTO {
     public void setProductPriceDiscount(Long productPriceDiscount) {
         this.productPriceDiscount = productPriceDiscount;
     }
-    
+
+    public ProductDemo getProductDemo() {
+        return productDemo;
+    }
+
+    public void setProductDemo(ProductDemo productDemo) {
+        this.productDemo = productDemo;
+    }
+
 }
