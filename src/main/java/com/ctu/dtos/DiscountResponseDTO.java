@@ -9,6 +9,7 @@ import com.ctu.utils.TimestampSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class DiscountResponseDTO {
+    private Long discountId;
     private String discountName;
     private Float discountPercent;
     private String discountDescription;
@@ -24,6 +25,7 @@ public class DiscountResponseDTO {
     }
 
     public DiscountResponseDTO(Discount discount) {
+        this.discountId = discount.getDiscountId();
         this.discountName = discount.getDiscountName();
         this.discountPercent = discount.getDiscountPercent();
         this.discountDescription = discount.getDiscountDescription();
@@ -80,6 +82,14 @@ public class DiscountResponseDTO {
 
     public void setToDate(Timestamp toDate) {
         this.toDate = toDate;
+    }
+
+    public Long getDiscountId() {
+        return discountId;
+    }
+
+    public void setDiscountId(Long discountId) {
+        this.discountId = discountId;
     }
 
 }

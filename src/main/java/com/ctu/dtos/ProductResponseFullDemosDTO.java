@@ -32,7 +32,7 @@ public class ProductResponseFullDemosDTO {
         this.productDemos = new ArrayList<ProductDemo>();
         product.getProductDemos().forEach((e) -> this.productDemos.add(e));
         if (product.getDiscounts().isEmpty()) this.productPriceDiscount = null;
-        else this.productPriceDiscount = (long) (product.getProductPrice()*(1-product.getDiscounts().get(0).getDiscountPercent()));
+        else this.productPriceDiscount = (long) (Math.round(product.getProductPrice())*(1-product.getDiscounts().get(0).getDiscountPercent()));
     }
 
     @JsonIgnore

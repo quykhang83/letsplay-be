@@ -20,7 +20,7 @@ public class ProductResponseReceiptDTO {
         if (product.getDiscounts().isEmpty())
             this.productPriceDiscount = null;
         else
-            this.productPriceDiscount = (long) (product.getProductPrice()
+            this.productPriceDiscount = (long) (Math.round(product.getProductPrice())
                     * (1 - product.getDiscounts().get(0).getDiscountPercent()));
     }
 
