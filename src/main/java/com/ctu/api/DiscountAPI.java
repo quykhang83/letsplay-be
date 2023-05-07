@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ctu.dtos.DiscountReceiveDTO;
+import com.ctu.dtos.DiscountResponseDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.ExitedProductInDiscountException;
 import com.ctu.exception.NotExitedProductInDiscountException;
@@ -54,22 +55,23 @@ public class DiscountAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDiscount(DiscountReceiveDTO discountPayload) {
+        DiscountResponseDTO result = new DiscountResponseDTO();
         if (discountPayload.isMissingKeys()) {
             logger.error("Missing keys in discount body");
             Message errMsg = new Message("Missing keys in discount body");
             throw new WebApplicationException(Response.status(400).entity(errMsg).build());
         }
         try {
-            discountService.createDiscount(discountPayload);
+            result = discountService.createDiscount(discountPayload);
         } catch (Exception e) {
             logger.error("Discount cannot be created!");
             Message message = new Message("Discount cannot be created!");
             throw new WebApplicationException(Response.status(400).entity(message).build());
         }
         logger.info("Discount was created successfully");
-        Message message = new Message("Discount was created successfully");
+        // Message message = new Message("Discount was created successfully");
 
-        return Response.ok(message).build();
+        return Response.ok(result).build();
     }
 
     @PATCH

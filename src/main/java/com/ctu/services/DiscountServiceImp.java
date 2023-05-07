@@ -44,7 +44,7 @@ public class DiscountServiceImp implements DiscountService {
     }
 
     @Override
-    public void createDiscount(DiscountReceiveDTO payload) {
+    public DiscountResponseDTO createDiscount(DiscountReceiveDTO payload) {
         Discount discount = new Discount(payload);
         try {
             discountDAO.createDiscount(discount);
@@ -52,6 +52,7 @@ public class DiscountServiceImp implements DiscountService {
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
         }
+        return new DiscountResponseDTO(discount);
     }
 
     @Override
