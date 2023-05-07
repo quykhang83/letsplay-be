@@ -17,11 +17,12 @@ import com.ctu.dtos.ReceiptResponseDTO;
 import com.ctu.exception.EmptyEntityException;
 import com.ctu.exception.IdNotFoundException;
 import com.ctu.exception.InvalidUserCommentException;
+import com.ctu.model.Product;
 import com.ctu.model.Receipt;
 import com.ctu.model.User;
 
 @Stateless
-public class ReceiptServiceImp implements ReceiptService{
+public class ReceiptServiceImp implements ReceiptService {
     @Inject
     ReceiptDAO receiptDAO;
     @Inject
@@ -30,7 +31,7 @@ public class ReceiptServiceImp implements ReceiptService{
     @Override
     public List<ReceiptResponseDTO> getAllReceipts() {
         List<ReceiptResponseDTO> result = new ArrayList<ReceiptResponseDTO>();
-        receiptDAO.getAllReceipts().forEach((e)-> result.add(new ReceiptResponseDTO(e)));
+        receiptDAO.getAllReceipts().forEach((e) -> result.add(new ReceiptResponseDTO(e)));
         return result;
     }
 
@@ -83,18 +84,22 @@ public class ReceiptServiceImp implements ReceiptService{
         try {
             User user = userDAO.getUserByEmail(email);
             Receipt receipt = new Receipt();
+            List<Product> products = user.getCart().getCartDetails();
 
             receipt.setUser(user);
             Timestamp createdTime = Timestamp.from(Instant.now().truncatedTo(ChronoUnit.SECONDS));
             receipt.setReceiptDate(createdTime);
             receipt.setReceiptTax(0.1F);
             receipt.setReceiptTotal(user.getCart().getCartPrice());
-            receipt.setReceiptDetails(user.getCart().getCartDetails());
+            receipt.setReceiptDetails(products);
 
             receiptDAO.createReceipt(receipt);
+            products.forEach((e) -> {
+                user.setSingleProductToLibrary(e);
+            });
             user.getCart().clearCart();
         } catch (EmptyEntityException e) {
-            
+
         }
     }
 
@@ -107,5 +112,5 @@ public class ReceiptServiceImp implements ReceiptService{
             receiptDAO.deleteReceipt(receiptId);
         }
     }
-    
+
 }

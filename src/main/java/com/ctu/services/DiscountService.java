@@ -14,7 +14,7 @@ public interface DiscountService {
 
     public Discount getDiscountById(final Long id);
 
-    public void createDiscount(DiscountReceiveDTO payload);
+    public DiscountResponseDTO createDiscount(DiscountReceiveDTO payload);
 
     public void updateDiscount(Long discountId, DiscountReceiveDTO payload) throws EmptyEntityException;
 
