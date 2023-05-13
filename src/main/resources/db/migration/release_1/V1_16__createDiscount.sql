@@ -17,7 +17,7 @@ CREATE TABLE PUBLIC.DiscountDetails (
 );
 
 INSERT INTO PUBLIC.Discounts(discountName, discountPercent, discountDescription, fromDate, toDate) 
-VALUES ('Cool Summer', '0.25', 'Demo discount for some products', '2022-12-16T12:00:00+00', '2023-03-08T12:00:00+00');
+VALUES ('Cool Summer', '0.25', 'https://vietabinhdinh.edu.vn/wp-content/uploads/Background-bien-%E2%80%93-Beach-dep-tuoi-mat-tran-day-nang.jpg', '2022-12-16T12:00:00+00', '2023-03-08T12:00:00+00');
 
 INSERT INTO PUBLIC.DiscountDetails(discountId, productId) VALUES ('1', '1');
 INSERT INTO PUBLIC.DiscountDetails(discountId, productId) VALUES ('1', '2');
