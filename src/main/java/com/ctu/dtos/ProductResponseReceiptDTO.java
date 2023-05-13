@@ -18,7 +18,7 @@ public class ProductResponseReceiptDTO {
         this.productDemo = product.getProductDemos().stream().filter(e -> e.getProductDemoTitle().equals("header"))
                 .findFirst().get();
         if (product.getDiscounts().isEmpty())
-            this.productPriceDiscount = null;
+            this.productPriceDiscount = (long) Math.round(product.getProductPrice());
         else
             this.productPriceDiscount = (long) (Math.round(product.getProductPrice())
                     * (1 - product.getDiscounts().get(0).getDiscountPercent()));
